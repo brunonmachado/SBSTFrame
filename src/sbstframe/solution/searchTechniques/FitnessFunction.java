@@ -5,9 +5,10 @@
  *	Bruno Machado          <brunonmachado@outlook.com>	
  *	André Lôbo             <andre.assis.lobo@gmail.com> 
  *	Celso Camilo           <celso@inf.ufg.br>
- *  Auri Vincenzi          <auri@inf.ufg.br>                                             
+ *      Auri Vincenzi          <auri@inf.ufg.br>                                             
  *	Cassio Rodrigues       <cassio@inf.ufg.br>
- *	Plinio Júnior          <plinio@inf.ufg.br
+ *	Plinio Júnior          <plinio@inf.ufg.br>
+ *      Eduardo Horst          <eduardoquijano2@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,7 +67,7 @@ public class FitnessFunction implements FitnessEvaluator<int[]>{
         int j;
         for (int i = 0; i<reqTotal; i++){
             for (j = 0; j<candidate.length; j++){
-                if(executeTest(i, candidate[j])){
+                if(benchmark.getTest(candidate[j],i)){
                     /*mutant i was killed by individual's test case j*/
                     covered.add(i);
                     break;
@@ -85,7 +86,7 @@ public class FitnessFunction implements FitnessEvaluator<int[]>{
         int j;
         for (int i = 0; i<reqTotal; i++){
             for (j = 0; j<candidate.length; j++){
-                if(executeTest(i, candidate[j])){
+                if(benchmark.getTest(candidate[j], i)){
                     /*mutant i was killed by individual's test case j*/
                     covered.add(i);
                     break;
@@ -97,8 +98,16 @@ public class FitnessFunction implements FitnessEvaluator<int[]>{
         
     }    
 
+    /**
+     * Execute the test case against the mutant
+     * @param mut identifier of the mutant
+     * @param tc identifier of the test case
+     * @return 
+     * @deprecated use a ProblemInterface.getTest() 
+     */
+    @Deprecated
     public boolean executeTest(int mut, int tc) {
-        return (benchmark.getTests().get(mut).get(tc) == 1);
+        return benchmark.getTest(tc,mut);
     }
     
     public double objectiveFunction(int covered){
