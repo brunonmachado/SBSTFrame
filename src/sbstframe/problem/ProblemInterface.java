@@ -5,9 +5,11 @@
  *	Bruno Machado          <brunonmachado@outlook.com>	
  *	André Lôbo             <andre.assis.lobo@gmail.com> 
  *	Celso Camilo           <celso@inf.ufg.br>
- *  Auri Vincenzi          <auri@inf.ufg.br>                                             
+ *      Auri Vincenzi          <auri@inf.ufg.br>                                             
  *	Cassio Rodrigues       <cassio@inf.ufg.br>
- *	Plinio Júnior          <plinio@inf.ufg.br
+ *	Plinio Júnior          <plinio@inf.ufg.br>
+ *      Eduardo Horst          <eduardoquijano2@gmail.com>
+ * 
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,8 +43,6 @@
 
 package sbstframe.problem;
 
-import java.util.HashMap;
-
 /**
  * Interface to implement the benchmark file reading, 
  * it calculates the total amount of test cases, requirements,
@@ -55,19 +55,14 @@ import java.util.HashMap;
 public interface ProblemInterface {
     
     /**
-     * @return the hashMap containing results of 
-     * all test cases applied to all requirements
-     * 
-     * The benchmark file can be read after passing its path on the constructor,
-     * meanwhile it's possible to calculate the total amount of test cases and requirements.
-     * Also the hashMap tests elements has to be set as 1 (covered) and 0 (not covered) 
-     * based on test cases applied to requirements.
-     * e.g: < 2, < 6, 1 >> requirement number 2 is covered by test case number 6
-     * e.g: < 2, < 6, 0 >> requirement number 2 isn't covered by test case number 6 
-     * 
+     * Function to get the results of the tests
+     * @return {@true} if the test requirement was covered by the test case
+     *         {@false} otherwise
+     * @param testCase identifier of the test case
+     * @param testReq identifier of the test requirement
      * 
      */
-    public HashMap<Integer, HashMap<Integer, Integer>> getTests();
+    public boolean getTest(int testCase, int testReq);
     
     /**
      * 
