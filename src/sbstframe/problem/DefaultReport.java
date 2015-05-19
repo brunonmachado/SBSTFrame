@@ -1,6 +1,7 @@
 /**
  *
- * Copyright (c) 2014-2015, Beatriz Proto          <beatrizproto@gmail.com>
+ * Copyright (c) 2014-2015, 
+ * Beatriz Proto          <beatrizproto@gmail.com>
  * Bruno Machado          <brunonmachado@outlook.com>
  * André Lôbo             <andre.assis.lobo@gmail.com>
  * Celso Camilo           <celso@inf.ufg.br>
@@ -47,16 +48,16 @@ import java.util.HashMap;
  * Reads the benchmark file using the proposed layout
  *
  * @see ProblemInterface
- * @author Andre/Beatriz/Bruno
+ * @author Andre/Beatriz/Bruno/Eduardo
  */
 public class DefaultReport implements ProblemInterface {
 
-    String benchmarkPath;
-    int tcTotal; //Number of test cases
-    int reqTotal; //Number of requirements
-    int worthlessReqTotal; //Number of worthless requirements
-    HashMap<Integer, HashMap<Integer, Integer>> tests; //tests<reqNum, Hash testCase <tcNum, reqStatus>>
-    double scoreMax;
+    private String benchmarkPath;
+    private int tcTotal; //Number of test cases
+    private int reqTotal; //Number of requirements
+    private int worthlessReqTotal; //Number of worthless requirements
+    private HashMap<Integer, HashMap<Integer, Integer>> tests; //tests<reqNum, Hash testCase <tcNum, reqStatus>>
+    private double scoreMax;
 
     public DefaultReport(String path, double scoreMax, int worthlessReqTotal) {
         this.benchmarkPath = path;
@@ -123,7 +124,7 @@ public class DefaultReport implements ProblemInterface {
         readBenchmarkFile();
     }
 
-    public void readBenchmarkFile() {
+    private void readBenchmarkFile() {
         try {
             BufferedReader buff = new BufferedReader(new FileReader(benchmarkPath));
             String temp, tokens[];
