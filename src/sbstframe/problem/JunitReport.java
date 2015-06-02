@@ -18,6 +18,7 @@ package sbstframe.problem;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
+import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
@@ -34,7 +35,7 @@ public class JunitReport implements ProblemInterface{
     /**
      * Holds all the test suites, were each one contains all test cases for one testRequisite
      */
-    private final TestSuite[] testCasesOnMutants; //Stores the testSuites (one for each mutant
+    private final TestSuite[] testCasesOnTestRequirements; //Stores the testSuites (one for each mutant
     
     /**
      * Holds the quantity of equal test cases
@@ -49,80 +50,106 @@ public class JunitReport implements ProblemInterface{
     /**
      * 
      * Constructor of the {@see JunitReport}
-     * @param testCasesOnMutants all test cases against all mutants, each {@see TestSuite}
+     * @param testCasesOnTestRequirements all test cases against all mutants, each {@see TestSuite}
      * @param WorthLessReq the quantity of equal test cases
      * @param scoreMax the max score of any given test case
      * @throws NullPointerException if testCasesOnMutants is null
      * @throws InvalidParameterException if the quantity of tests in any TestSuite of
      * testCaseOnMutants differs
      */
-    public JunitReport(TestSuite[] testCasesOnMutants, int WorthLessReq, double scoreMax) throws NullPointerException, InvalidParameterException {
+    public JunitReport(TestSuite[] testCasesOnTestRequirements, int WorthLessReq, double scoreMax) throws NullPointerException, InvalidParameterException {
         //Integrity test, all mutants must have the same quantity of Tests since it is spected for them to run the same tests
-        int qntTestCase = testCasesOnMutants[0].testCount();
-        for(int mutantIndex = 0; mutantIndex < testCasesOnMutants.length; mutantIndex++) {
-            if(testCasesOnMutants[mutantIndex].testCount() != qntTestCase) {
+        int qntTestCase = testCasesOnTestRequirements[0].testCount();
+        for(int mutantIndex = 0; mutantIndex < testCasesOnTestRequirements.length; mutantIndex++) {
+            if(testCasesOnTestRequirements[mutantIndex].testCount() != qntTestCase) {
                 throw new InvalidParameterException("The quantity of test cases"
-                        + "difer from mutant 0 and " + mutantIndex);
+                        + "difer from test requirement 0 and " + mutantIndex);
             }
         }
         
-        this.testCasesOnMutants = testCasesOnMutants;
+        this.testCasesOnTestRequirements = testCasesOnTestRequirements;
         this.testCache = new HashMap<>();
         this.WorthLessReq = WorthLessReq;
         this.scoreMax = scoreMax;
+        
     }
 
     /**
-     * Gets the test result of the test case in the test requisite.
+     * Gets test result of test case in the test requisite.
      * This method records recently used test cases in order to give a faster
      * answer, and only executes the test case if it isn't recorded
      * @param testCase test case index
      * @param testReq test requisite index
-     * @return true if the test was covered
-     *         false if the test wasn't covered
+     * @return {@see true} if the test was covered
+     *         {@see false} if the test wasn't covered
+     * @see runTest
+     * @see recordTest
      */
     @Override
     public boolean getTest(int testCase, int testReq) {
-        Map<Integer,Boolean> knownResults;
-        knownResults = testCache.get(testReq);
-        if(knownResults != null) {
-            Boolean result;
-            result = knownResults.get(testCase);
-            
-            if(result != null) {
-                return result;
+        {
+            Map<Integer,Boolean> testRequisiteContainer;
+            testRequisiteContainer = testCache.get(testReq);
+            if(testRequisiteContainer != null) {
+                Boolean testResult;
+                testResult = testRequisiteContainer.get(testCase);
+                if(testResult != null) {
+                    return testResult;
+                }
             }
         }
         
-        return runAndRecordTest(testCase, testReq);
+        boolean result;
+        result = runTest(testCase, testReq);
+        recordTest(testCase, testReq, result);
+        
+        return result;
     }
     
     /**
-     * Runs an test case and record it to testCache
+     * Runs an test case and record it in testCache
      * @param testCase test case index
      * @param testReq test requisite index
-     * @return true if the test was covered
-     *          false if the test wasn't covered
+     * @param testResult test result to be recorded
      * @see getTest
      */
-    private boolean runAndRecordTest(int testCase, int testReq) {
-        TestResult result = new TestResult();
-        testCasesOnMutants[testReq].testAt(testCase).run(result);
-        
+    public void recordTest(int testCase, int testReq, boolean testResult) {
         Map<Integer,Boolean> testRequisiteContainer;
         testRequisiteContainer = testCache.get(testReq);
         if(testRequisiteContainer == null) {    //Test cache doesn't contains the testReq
             testRequisiteContainer = new HashMap<>();
             testCache.put(testReq, testRequisiteContainer);
         }
-        testRequisiteContainer.put(testCase, result.wasSuccessful());
+        testRequisiteContainer.put(testCase, testResult);
+    }
+    
+    /**
+     * Runs testCase of testRequisite
+     * @param testCase test case index
+     * @param testReq test requisite index
+     * @return true if test was covered
+     *          false if test wasn't covered
+     */
+    public boolean runTest(int testCase, int testReq) {
+        TestResult result;
+        result = new TestResult();
+        
+        {
+            TestSuite testReqContainer;
+            testReqContainer = testCasesOnTestRequirements[testReq];
+            
+            Test myTest;
+            myTest = testReqContainer.testAt(testCase);
+            myTest.run(result);
+        }
+        
         
         return result.wasSuccessful();
     }
 
     @Override
     public String getBenchmarkPath() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "benchmarks/lastJunitExec.csv";
     }
 
     /**
@@ -131,7 +158,7 @@ public class JunitReport implements ProblemInterface{
      */
     @Override
     public int getTestCaseTotal() {
-        return testCasesOnMutants[0].testCount();
+        return testCasesOnTestRequirements[0].testCount();
     }
 
     /**
@@ -140,7 +167,7 @@ public class JunitReport implements ProblemInterface{
      */
     @Override
     public int getRequirementTotal() {
-        return testCasesOnMutants.length;
+        return testCasesOnTestRequirements.length;
     }
 
     /**
