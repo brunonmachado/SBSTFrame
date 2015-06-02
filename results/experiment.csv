@@ -25,3 +25,6 @@
 "maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
 "1.0000000";"1.0000000";"0.0000000";"11.6112";"4";"geneticAlg;0.95;0.05;useClassification;0.1";
 
+"maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
+"1.0000000";"1.0000000";"0.0000000";"2.2668";"4";"evolStrategy;0.95;0.05;false;7;useClassification;0.0";
+
