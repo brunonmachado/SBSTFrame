@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2015 Eduardo Horst.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package sample.junit;
 
@@ -16,10 +26,10 @@ import sbstframe.solution.searchTechniques.AbstractEvolutionaryAlgorithm;
 import sbstframe.solution.searchTechniques.RandomAlgorithm;
 
 /**
- *
+ * Testing the Junit integration
  * @author eddyosos
  */
-public class JunitSbstFrameTest {
+public class JunitTest {
 
     /**
      * @param args the command line arguments
@@ -41,10 +51,7 @@ public class JunitSbstFrameTest {
         testCasesOnMutants[2] = new TestSuite(sample.junit.mutantes.m2.MoneyTest.class);
         testCasesOnMutants[3] = new TestSuite(sample.junit.mutantes.m3.MoneyTest.class);
         testCasesOnMutants[4] = new TestSuite(sample.junit.mutantes.m4.MoneyTest.class);
-        TestResult result;
-        result = new TestResult();
-        testCasesOnMutants[0].testAt(1).run(result);
-        System.out.println(result.toString());
+
         defaultReport = new JunitReport(testCasesOnMutants, 0, 0);
         exp = new Experiment(1, 60);
 
@@ -63,6 +70,5 @@ public class JunitSbstFrameTest {
                                  + "RESULT " + defaultReport.getTest(testCase, testReq));
             }
         }
-
     }
 }
