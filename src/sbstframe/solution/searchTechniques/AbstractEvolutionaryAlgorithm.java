@@ -40,11 +40,9 @@
  */
 package sbstframe.solution.searchTechniques;
 
-import sbstframe.solution.searchTechniques.operators.IntArrayFactory;
 import sbstframe.solution.searchTechniques.operators.FitnessOrTime;
 import sbstframe.solution.searchTechniques.operators.EvolutionLogger;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
-import org.uncommons.watchmaker.framework.AbstractEvolutionEngine;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 import org.uncommons.watchmaker.framework.islands.IslandEvolution;
 import sbstframe.problem.ProblemInterface;
