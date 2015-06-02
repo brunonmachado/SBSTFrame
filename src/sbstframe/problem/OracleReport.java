@@ -98,7 +98,7 @@ public class OracleReport implements ProblemInterface {
      */
     @Override
     public int getWorthlessReqTotal() {
-        return mutants.getRequirementTotal();
+        return mutants.getWorthlessReqTotal();
     }
 
     /**

@@ -15,7 +15,6 @@
  */
 package sample.Oracule;
 
-import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 import sbstframe.problem.JunitReport;
@@ -55,6 +54,7 @@ public class OracleTest {
 
         TestSuite[] Oracule = new TestSuite[1];
         Oracule[0] = new TestSuite(sample.junit.mutantes.original.MoneyTest.class);
+        
         defaultReport = new OracleReport(new JunitReport(Oracule,0,0), new JunitReport(testCasesOnMutants, 0, 0));
         exp = new Experiment(1, 60);
         
