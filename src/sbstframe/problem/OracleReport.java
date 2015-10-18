@@ -15,7 +15,8 @@
  */
 package sbstframe.problem;
 
-import java.security.InvalidParameterException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Implements an generic use of ProblemInterface for mutation test using an Oracle
@@ -26,31 +27,39 @@ public class OracleReport implements ProblemInterface {
     /**
      * Holds the Oracle also known as the original program results
      */
-    private ProblemInterface oracle;
+    private final Object oracle;
     
     /**
-     * Holds the mutants also known as the mutants results
+     * Holds the mutants
      */
-    private ProblemInterface mutants;
+    private final Object[] mutants;
 
     /**
-     * Default Constructor
-     * @param oracle source of the expected results
-     * @param mutants source of the results to be tested
-     * @throws InvalidParameterException if the oracle has more than one test requirements
-     *                                   or the oracle and mutants has a diferent quantity of test cases
-     * @see ProblemInterface 
+     * Holds the parameters, as parameters[i][j]
+     * where i is the test case
+     * where j is the parameter number
+     * EX: parameters[5][10] means the 5th test case 10th parameter.
      */
-    public OracleReport(ProblemInterface oracle, ProblemInterface mutants) {
-        if(oracle.getRequirementTotal() != 1) {
-            throw new InvalidParameterException("The oracle must be the only test requirement");
-        }
-        if(oracle.getTestCaseTotal() != mutants.getTestCaseTotal()) {
-            throw new InvalidParameterException("The oracle and it's mutants must have same quantity of testCases");
-        }
-        
+    private final Object[][] parameters;
+    
+    /**
+     * Holds the method whose is used in every test case of every mutant;
+     */
+    private final Method testingMethod;
+
+    
+    /**
+     * Default Implementation
+     * @param oracle an Object that represents the original program
+     * @param mutants an array of Objects that represents each mutant of the original program
+     * @param parameters an matrix  of parameters
+     * @param testingMethod 
+     */
+    public OracleReport(Object oracle, Object[] mutants, Object[][] parameters, Method testingMethod) {
         this.oracle = oracle;
         this.mutants = mutants;
+        this.parameters = parameters;
+        this.testingMethod = testingMethod;
     }
     
     /**
@@ -59,10 +68,29 @@ public class OracleReport implements ProblemInterface {
      * @param testReq index of the test requisite
      * @return true if the mutant is dead
      *         false if the mutant is alive
+     * @throws ArrayIndexOutOfBoundsException if testCase or testReq are out of bounds
+     * @throws NullPointerException TEMPORARY
      */
     @Override
     public boolean getTest(int testCase, int testReq) {
-        return oracle.getTest(testCase, 0) != mutants.getTest(testCase, testReq);
+        Object expected;
+        
+        try {
+            expected = testingMethod.invoke(oracle, parameters[testCase]);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            //TODO
+            return false;
+        }
+        
+        Object result;
+        try {
+            result = testingMethod.invoke(mutants[testReq], parameters[testCase]);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            //TODO
+            return false;
+        }
+        
+        return !expected.equals(result);
     }
 
     /**
@@ -71,7 +99,7 @@ public class OracleReport implements ProblemInterface {
      */
     @Override
     public String getBenchmarkPath() {
-        return mutants.getBenchmarkPath();
+        return "OracleReport";
     }
 
     /**
@@ -80,7 +108,7 @@ public class OracleReport implements ProblemInterface {
      */
     @Override
     public int getTestCaseTotal() {
-        return mutants.getTestCaseTotal();
+        return parameters.length;
     }
 
     /**
@@ -89,7 +117,7 @@ public class OracleReport implements ProblemInterface {
      */
     @Override
     public int getRequirementTotal() {
-        return mutants.getRequirementTotal();
+        return mutants.length;
     }
 
     /**
@@ -98,7 +126,7 @@ public class OracleReport implements ProblemInterface {
      */
     @Override
     public int getWorthlessReqTotal() {
-        return mutants.getWorthlessReqTotal();
+        return 0;
     }
 
     /**
@@ -107,7 +135,7 @@ public class OracleReport implements ProblemInterface {
      */
     @Override
     public double getScoreMax() {
-        return mutants.getScoreMax();
+        return 0;
     }
     
 }
