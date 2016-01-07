@@ -16,8 +16,6 @@
 package sbstframe.problem;
 
 import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.Map;
 import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
