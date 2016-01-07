@@ -59,6 +59,13 @@ public class DefaultReport implements ProblemInterface {
     private HashMap<Integer, HashMap<Integer, Integer>> tests; //tests<reqNum, Hash testCase <tcNum, reqStatus>>
     private double scoreMax;
 
+    /**
+     * Default constructor for {@code ProblemInterface}
+     * @param path path to benchmark, ex: benchmarks/bubcorrecto.csv"
+     * @param scoreMax Max score to be considerated
+     * @param worthlessReqTotal  quantity of useless test requirements (whose 
+     * will allways return the same test result as some other test requirement)
+     */
     public DefaultReport(String path, double scoreMax, int worthlessReqTotal) {
         this.benchmarkPath = path;
         this.tcTotal = -1;
@@ -124,6 +131,9 @@ public class DefaultReport implements ProblemInterface {
         readBenchmarkFile();
     }
 
+    /**
+     * reads and loads all tests in benchmark file, stores in {@code tests}
+     */
     private void readBenchmarkFile() {
         try {
             BufferedReader buff = new BufferedReader(new FileReader(benchmarkPath));
@@ -157,16 +167,28 @@ public class DefaultReport implements ProblemInterface {
         }
     }
 
+    /**
+     * Path to benchmark path
+     * @return path
+     */
     @Override
     public String getBenchmarkPath() {
         return this.benchmarkPath;
     }
 
+    /**
+     * Quantity of test cases
+     * @return count
+     */
     @Override
     public int getTestCaseTotal() {
         return this.tcTotal;
     }
 
+    /**
+     * Quantity of test requirements
+     * @return count
+     */
     @Override
     public int getRequirementTotal() {
         return this.reqTotal;
@@ -182,11 +204,19 @@ public class DefaultReport implements ProblemInterface {
         return this.tests.get(testReq).get(testCase) == 1;
     }
 
+    /**
+     * Quantity of repeated test cases
+     * @return 
+     */
     @Override
     public int getWorthlessReqTotal() {
         return this.worthlessReqTotal;
     }
 
+    /**
+     * Max score to be considerated
+     * @return 
+     */
     @Override
     public double getScoreMax() {
         return this.scoreMax;
