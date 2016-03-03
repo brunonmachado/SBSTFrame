@@ -46,7 +46,8 @@ import java.util.HashMap;
 
 /**
  * Reads the benchmark file using the proposed layout
- *
+ * DO NOT USE IT WITH CACHED REPORT
+ * This class already has a storage for test results
  * @see ProblemInterface
  * @author Andre/Beatriz/Bruno/Eduardo
  */

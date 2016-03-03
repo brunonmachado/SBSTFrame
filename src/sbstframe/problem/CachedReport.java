@@ -110,29 +110,47 @@ public class CachedReport implements ProblemInterface {
      * Storage for the key identifier used in hashmap
      */
     private class Key {
+        /**
+         * Index of the test case
+         */
         private final int testCase;
+        
+        /**
+         * Index of the test requirement
+         */
         private final int testReq;
         
         /**
          * Creates a key for usage in the hash map, note parameters order matter,
          * expression ( new key(1,2) != new key(2,1) ) is true
-         * @param testCase 
-         * @param testReq 
+         * @param testCase index of test case
+         * @param testReq  index of test requirement
          */
         private Key(int testCase, int testReq) {
             this.testCase = testCase;
             this.testReq = testReq;
         }
         
-        
+        /**
+         * Exposes testCase for reading
+         * @return testCase
+         */
         public int getTestCase() {
             return testCase;
         }
         
+        /**
+         * Exposes testReq for reading
+         * @return 
+         */
         public int getTestReq() {
             return testReq;
         }
 
+        /**
+         * Hash function for this class, depedent on testCase and testReq
+         * @return hashCode
+         */
         @Override
         public int hashCode() {
             int hash = 3;

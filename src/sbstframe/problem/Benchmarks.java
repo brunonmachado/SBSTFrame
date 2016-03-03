@@ -41,6 +41,10 @@
 
 package sbstframe.problem;
 
+/**
+ * Enum containing the default benchmarks supported by SBSTFrame
+ * @author 
+ */
 public enum Benchmarks {
     bubcorrecto, fourballs, mid, trityp, cal, comm, look, uniq,
     spaceResultByLine, spaceResultByMethod;

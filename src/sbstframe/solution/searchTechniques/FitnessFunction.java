@@ -48,21 +48,41 @@ import java.util.Set;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
 import sbstframe.problem.ProblemInterface;
 
+/**
+ * Fitness function for evaluating individuals 
+ */
 public class FitnessFunction implements FitnessEvaluator<int[]>{
+    /**
+     * Quantity of requirements
+     */
     int reqTotal;
-    ProblemInterface benchmark;
-    static int count;
+    
+    /**
+     * Test source
+     */
+    private ProblemInterface benchmark;
+    
+    /**
+     * Quantity of times which evaluation function was called
+     */
+    private static int evaluationCalls = 0;
    
     public FitnessFunction(ProblemInterface benchmark){
         this.reqTotal = benchmark.getRequirementTotal();
         this.benchmark = benchmark;
-        this.count = 0;
+        //this.evaluationCalls = 0;
     }
     
 
+    /**
+     * Evaluates the individual
+     * @param candidate individual
+     * @param population testRequirements
+     * @return the percentage of coverage for this candidate
+     */
     public double getFitness(int[] candidate, List<? extends int[]> population)
     {
-        count++;
+        evaluationCalls++;
         Set<Integer> covered = new HashSet<>();
         int j;
         for (int i = 0; i<reqTotal; i++){
@@ -79,9 +99,16 @@ public class FitnessFunction implements FitnessEvaluator<int[]>{
         
     }
 
+    /**
+     * ??
+     * @param candidate
+     * @param population
+     * @param callfitness
+     * @return 
+     */
     public double getFitness(int[] candidate, List<? extends int[]> population, int callfitness)
     {
-        count++;
+        evaluationCalls++;
         Set<Integer> covered = new HashSet<>();
         int j;
         for (int i = 0; i<reqTotal; i++){
@@ -110,17 +137,31 @@ public class FitnessFunction implements FitnessEvaluator<int[]>{
         return benchmark.getTest(tc,mut);
     }
     
+    /**
+     * Returns the percentual coverage taking in consideration the worthless
+     * test requirements
+     * @param covered
+     * @return percentual covered;
+     */
     public double objectiveFunction(int covered){
         return (double) covered / (double)(reqTotal - this.benchmark.getWorthlessReqTotal());
     }
 
+    /**
+     * Marks if this fitness function evaluates better scores as better individuals
+     * @return true (always)
+     */
     public boolean isNatural() //if true maximize fitness
     {
         return true;
     }
 
-    int getEvaluatorCallsTotal() {
-        return this.count;
+    /**
+     * Exposes the quantity of calls to evaluation function
+     * @return evaluationCalls
+     */
+    public int getEvaluatorCallsTotal() {
+        return this.evaluationCalls;
     }
 
 }

@@ -23,27 +23,21 @@ package sbstframe.solution.searchTechniques;
  */
 import org.uncommons.watchmaker.framework.PopulationData;
 import org.uncommons.watchmaker.framework.TerminationCondition;
-import static sbstframe.solution.searchTechniques.FitnessFunction.count;
+//import static sbstframe.solution.searchTechniques.FitnessFunction.count;
 
 public class MyTerminalCondition implements TerminationCondition {
-    private int currentCall;
     private int maxCall;
-   // private FitnessFunction fit;
+    private FitnessFunction fit;
     
-    public MyTerminalCondition(int maxCall, int currentCall){
-        this.currentCall = count;
+    public MyTerminalCondition(int maxCall, FitnessFunction fit){
+        this.fit = fit;
         this.maxCall = maxCall;
     }
 
 
     @Override
     public boolean shouldTerminate(PopulationData<?> populationData) {
-       
-        if ( this.currentCall > this.maxCall){
-            return true;
-        } 
-            
-        return false;
+        return fit.getEvaluatorCallsTotal() > this.maxCall;
         
     }    
     public long getMaxCall() {
@@ -54,12 +48,8 @@ public class MyTerminalCondition implements TerminationCondition {
         this.maxCall = maxCall;
     }
 
-    public void setCurrentCall(int currentCall) {
-        this.currentCall = currentCall;
-    }
-
     public int getCurrentCall() {
-        return currentCall;
+        return fit.getEvaluatorCallsTotal();
     }
 
 

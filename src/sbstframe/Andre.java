@@ -29,6 +29,7 @@ import sbstframe.solution.searchTechniques.AbstractEvolutionaryAlgorithm;
 import sbstframe.solution.searchTechniques.EvolutionaryStrategy;
 import sbstframe.solution.searchTechniques.GeneticAlgorithm;
 import sbstframe.solution.searchTechniques.IslandModel;
+import sbstframe.solution.searchTechniques.MyTerminalCondition;
 import sbstframe.solution.searchTechniques.RandomAlgorithm;
 import sbstframe.solution.searchTechniques.SteadyState;
 import sbstframe.solution.searchTechniques.SelectionOperator;
@@ -50,7 +51,7 @@ public class Andre {
         AbstractEvolutionaryAlgorithm alg;
         Metrics results;
         
-        for(int i= 0; i<1; i++){
+        for(int i= 1; i<2; i++){
             
             switch(i){
                  
@@ -69,11 +70,12 @@ public class Andre {
                 case 1:
                      System.out.println("Experimento 1 - EvolutionaryStrategy (1,7) OpOMMAC 10%");
                      defaultReport = new DefaultReport(Benchmarks.uniq);
-                     exp = new Experiment(4, 60);
+                     exp = new Experiment(2, 60);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate,plus selection, offspringmultiplayer, OMMAC)
-                    alg = new EvolutionaryStrategy(defaultReport, 39, 4, 0.95, 0.05,false,7, 0.1); //restante dos params padrao
-                    
+                    alg = new GeneticAlgorithm(defaultReport, 50, 10, 0.95, 0.05, SelectionOperator.RouletteWheel); //restante dos params padrao
+                    alg.setTerminationCondition(new MyTerminalCondition(2, alg.getFitnessFunction()));
+
                     results = exp.run(alg);
                     System.out.println(results.toString());
                   break;

@@ -79,3 +79,15 @@
 "index";"fitness";
 "0";"0.8000000";
 
+"maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
+"0,9878049";"0,9822453";"0,0001177";"0,0207";"390";"evolStrategy;0.95;0.05;false;7;useClassification;0.1";
+
+"index";"fitness";
+"0";"0,9992826";
+
+"index";"fitness";
+"0";"0,9992826";
+
+"maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
+"0,9899570";"0,9899570";"0,0000000";"0,0580";"149";"geneticAlg;0.95;0.05;useClassification;0.0";
+
