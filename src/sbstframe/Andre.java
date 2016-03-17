@@ -16,11 +16,13 @@
 
 package sbstframe;
 
+import java.io.IOException;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 
 import sbstframe.problem.Benchmarks;
-import sbstframe.problem.DefaultReport;
+import sbstframe.problem.CachedReport;
+import sbstframe.problem.DefaultReportLazy;
 import sbstframe.problem.ProblemInterface;
 
 import sbstframe.results.Metrics;
@@ -40,7 +42,7 @@ import sbstframe.solution.searchTechniques.SelectionOperator;
  */
 public class Andre {
     
-       public static void main(String[] args) {
+       public static void main(String[] args) throws IOException {
         // TODO code application logic here
        //framework's benchmark and algorithm
         ProblemInterface defaultReport;
@@ -57,7 +59,7 @@ public class Andre {
                  
                 case 0:
                      System.out.println("Experimento 1 - EvolutionaryStrategy (1,7) ");
-                     defaultReport = new DefaultReport(Benchmarks.uniq);
+                     defaultReport = new DefaultReportLazy(Benchmarks.uniq);
                      exp = new Experiment(4, 60);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate,plus selection, offspringmultiplayer, OMMAC)
@@ -69,7 +71,8 @@ public class Andre {
                      
                 case 1:
                      System.out.println("Experimento 1 - EvolutionaryStrategy (1,7) OpOMMAC 10%");
-                     defaultReport = new DefaultReport(Benchmarks.uniq);
+                     defaultReport = new DefaultReportLazy(Benchmarks.uniq);
+                     defaultReport = new CachedReport(defaultReport);
                      exp = new Experiment(2, 60);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate,plus selection, offspringmultiplayer, OMMAC)
@@ -82,7 +85,7 @@ public class Andre {
                  
                  case 2:
                      System.out.println("Experimento 1 - EvolutionaryStrategy (1,7) OpOMMAC 40%");
-                     defaultReport = new DefaultReport(Benchmarks.uniq);
+                     defaultReport = new DefaultReportLazy(Benchmarks.uniq);
                      exp = new Experiment(30, 180);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate,plus selection, offspringmultiplayer, OMMAC)
@@ -95,7 +98,7 @@ public class Andre {
                      
                  case 3:
                      System.out.println("Experimento 1 - EvolutionaryStrategy (1,7) OpOMMAC 70%");
-                     defaultReport = new DefaultReport(Benchmarks.uniq);
+                     defaultReport = new DefaultReportLazy(Benchmarks.uniq);
                      exp = new Experiment(30, 180);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate,plus selection, offspringmultiplayer, OMMAC)
@@ -107,7 +110,7 @@ public class Andre {
 
                  case 4:
                      System.out.println("Experimento 1 -  EvolutionaryStrategy (1 + 7) OMMAC 10%  ");
-                     defaultReport = new DefaultReport(Benchmarks.uniq);
+                     defaultReport = new DefaultReportLazy(Benchmarks.uniq);
                      exp = new Experiment(30, 180);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate,plus selection, offspringmultiplayer, OMMAC)
@@ -119,7 +122,7 @@ public class Andre {
                 
                 case 5:
                      System.out.println("Experimento 1 - EvolutionaryStrategy (1 + 1) OMMAC 10% ");
-                     defaultReport = new DefaultReport(Benchmarks.uniq);
+                     defaultReport = new DefaultReportLazy(Benchmarks.uniq);
                      exp = new Experiment(30, 180);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate,plus selection, offspringmultiplayer, OMMAC)
@@ -132,7 +135,7 @@ public class Andre {
                
                 case 6:
                      System.out.println("Experimento 1 - SteadyState 2, 2 OMMAC 10% ");
-                     defaultReport = new DefaultReport(Benchmarks.uniq);
+                     defaultReport = new DefaultReportLazy(Benchmarks.uniq);
                      exp = new Experiment(30, 180);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate, selectionSize, forceSingle, enum selectionStrategy, OMMAC )
@@ -145,7 +148,7 @@ public class Andre {
                          
                 case 7:
                      System.out.println("Experimento 1 - SteadyState 2,1 OMMAC 10%  ");
-                     defaultReport = new DefaultReport(Benchmarks.uniq);
+                     defaultReport = new DefaultReportLazy(Benchmarks.uniq);
                      exp = new Experiment(30, 180);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate, selectionSize, forceSingle, enum selectionStrategy, OMMAC )
@@ -158,7 +161,7 @@ public class Andre {
                     
                 case 8:
                      System.out.println("Experimento 1 - Modelo Ilhas  épocas: 25 migração: 5; OMMAC 10%  ");
-                     defaultReport = new DefaultReport(Benchmarks.uniq);
+                     defaultReport = new DefaultReportLazy(Benchmarks.uniq);
                      exp = new Experiment(30, 180);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate, islands, migration, epoch, enum selectionStrategy, OMMAC )
@@ -170,7 +173,7 @@ public class Andre {
                     
                  case 9:
                      System.out.println("Experimento 1 - AG OMMAC  10%");
-                     defaultReport = new DefaultReport(Benchmarks.uniq);
+                     defaultReport = new DefaultReportLazy(Benchmarks.uniq);
                      exp = new Experiment(4, 60);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate, enum selectionStrategy, OMMAC )
@@ -183,7 +186,7 @@ public class Andre {
                  case 10:
                      
                     System.out.println("Experimento 1 - AL ");
-                    defaultReport = new DefaultReport(Benchmarks.spaceResultByMethod);
+                    defaultReport = new DefaultReportLazy(Benchmarks.spaceResultByMethod);
                     exp = new Experiment(30, 180);
 
                     //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate, enum selectionStrategy, OMMAC )

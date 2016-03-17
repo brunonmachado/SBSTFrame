@@ -40,37 +40,42 @@
  */
 package sbstframe.problem;
 
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
-import java.util.HashMap;
+import java.io.IOException;
 
 /**
  * Reads the benchmark file using the proposed layout
- * DO NOT USE WITH CACHED REPORT, this implemaentation has it's own way of storing
- * data and thus doesn't need to be cached
  * @see ProblemInterface
  * @author Andre/Beatriz/Bruno/Eduardo
  */
-public class DefaultReport implements ProblemInterface {
+public class DefaultReportLazy implements ProblemInterface {
 
+    private final static char SEPARATOR = ';';
+    
     private String benchmarkPath;
     private int tcTotal; //Number of test cases
     private int reqTotal; //Number of requirements
     private int worthlessReqTotal; //Number of worthless requirements
-    private final HashMap<Integer, HashMap<Integer, Integer>> tests; //tests<reqNum, Hash testCase <tcNum, reqStatus>>
     private double scoreMax;
-
-    public DefaultReport(String path, double scoreMax, int worthlessReqTotal) {
+    
+    /**
+     * Default constructor for {@code ProblemInterface}
+     * @param path path to benchmark, ex: benchmarks/bubcorrecto.csv"
+     * @param scoreMax Max score to be considerated
+     * @param worthlessReqTotal  quantity of useless test requirements (whose 
+     * will allways return the same test result as some other test requirement)
+     */
+    public DefaultReportLazy(String path, double scoreMax, int worthlessReqTotal) throws IOException {
         this.benchmarkPath = path;
         this.tcTotal = -1;
         this.reqTotal = -1;
         this.worthlessReqTotal = worthlessReqTotal;
-        this.tests = new HashMap<>();
         this.scoreMax = scoreMax;
-        readBenchmarkFile();
+        sizeFile();
     }
 
-    public DefaultReport(Benchmarks benchmark) {
+    public DefaultReportLazy(Benchmarks benchmark) throws IOException{
         this.benchmarkPath = "benchmarks/";
         this.tcTotal = -1;
         this.reqTotal = -1;
@@ -121,53 +126,57 @@ public class DefaultReport implements ProblemInterface {
                 break;
 
         }
-        tests = new HashMap<>();
-        readBenchmarkFile();
+        
+        
+        sizeFile();
     }
 
-    private void readBenchmarkFile() {
-        try {
-            BufferedReader buff = new BufferedReader(new FileReader(benchmarkPath));
-            String temp, tokens[];
-
-            if ((temp = buff.readLine()) == null) {
-                System.err.println("Benchmark at " + benchmarkPath + " is empty");
+    /**
+     * Reads the benchmarkPath file in order to size it.
+     * @throws NoSuchElementException if benchmark path file is empty
+     * @throws IOException if benchmarkPath file doesn't exists
+     */
+    private void sizeFile() throws IOException {
+        try (FileReader reader = new FileReader(new File(benchmarkPath))) {
+            reqTotal = tcTotal = 0;
+            
+            boolean lineOver = false;
+            while(reader.ready() && !lineOver) switch (reader.read()) {
+                case SEPARATOR:
+                    tcTotal++;
+                    break;
+                case '\n':
+                    lineOver = true;
+                    break;
             }
-            this.tcTotal = temp.length() / 2;
-            System.out.println("Total de Caso de teste: " + tcTotal);
-            int reqCount = 0;
-            do {
-                HashMap<Integer, Integer> tcResult = new HashMap<>(); //<tcNum, reqStatus>
-
-                tokens = temp.split(";");
-
-                for (int i = 0; i < tokens.length; i++) {
-                    tcResult.put((Integer) i, Integer.valueOf(tokens[i]));
-                }
-
-                this.tests.put(reqCount, tcResult); //link requirements with its list
-                reqCount++;
-            } while ((temp = buff.readLine()) != null);
-
-            this.reqTotal = reqCount;
-            System.out.println("Total de Metodos: " + reqTotal);
-            buff.close();
-
-        } catch (Exception e) {
-            System.out.println("\nError reading file: " + benchmarkPath);
+            while(reader.ready()) if(reader.read() == '\n') reqTotal++;
+            
+            System.out.println("reqTotal - " + reqTotal + ". tcTotal - " + tcTotal);
         }
     }
-
+    
+    /**
+     * Path to benchmark path
+     * @return path
+     */
     @Override
     public String getBenchmarkPath() {
         return this.benchmarkPath;
     }
 
+    /**
+     * Quantity of test cases
+     * @return count
+     */
     @Override
     public int getTestCaseTotal() {
         return this.tcTotal;
     }
 
+    /**
+     * Quantity of test requirements
+     * @return count
+     */
     @Override
     public int getRequirementTotal() {
         return this.reqTotal;
@@ -179,18 +188,38 @@ public class DefaultReport implements ProblemInterface {
      * @see ProblemInterface.getTest
      */
     @Override
+    @SuppressWarnings("empty-statement")
     public boolean getTest(int testCase, int testReq) {
-        return this.tests.get(testReq).get(testCase) == 1;
-    }
-
+         try(FileReader reader = new FileReader(benchmarkPath)) {
+            reader.skip((tcTotal*2 + 1) * testReq + 2 * testCase);
+            return reader.read() == '1';
+            
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        
+}
+        
+    
+    
+    /**
+     * Quantity of repeated test cases
+     * @return 
+     */
     @Override
     public int getWorthlessReqTotal() {
         return this.worthlessReqTotal;
     }
 
+    /**
+     * Max score to be considerated
+     * @return 
+     */
     @Override
     public double getScoreMax() {
         return this.scoreMax;
     }
+
+    
 
 }

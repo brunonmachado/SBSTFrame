@@ -15,7 +15,6 @@
  */
 package sample.junit;
 
-import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
 import sbstframe.problem.JunitReport;

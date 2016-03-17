@@ -91,3 +91,12 @@
 "maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
 "0,9899570";"0,9899570";"0,0000000";"0,0580";"149";"geneticAlg;0.95;0.05;useClassification;0.0";
 
+"index";"fitness";
+"0";"0,8000000";
+
+"maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
+"1,1608040";"1,1608040";"0,0000000";"2,2125";"149";"geneticAlg;0.95;0.05;useClassification;0.0";
+
+"maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
+"0,9992821";"0,9992821";"0,0000000";"178,9605";"149";"geneticAlg;0.95;0.05;useClassification;0.0";
+

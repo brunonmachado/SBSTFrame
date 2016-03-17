@@ -12,7 +12,7 @@ public class MoneyTest extends TestCase {
     private IMoney fMB2;
 
     public static void main(String args[]) {
-        junit.textui.TestRunner.run(MoneyTest.class);
+        //junit.textui.TestRunner.run(MoneyTest.class);
     }
 
     @Override
