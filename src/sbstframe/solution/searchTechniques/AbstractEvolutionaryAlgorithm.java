@@ -5,9 +5,11 @@
  *	Bruno Machado          <brunonmachado@outlook.com>	
  *	André Lôbo             <andre.assis.lobo@gmail.com> 
  *	Celso Camilo           <celso@inf.ufg.br>
- *  Auri Vincenzi          <auri@inf.ufg.br>                                             
+ *      Auri Vincenzi          <auri@inf.ufg.br>                                             
  *	Cassio Rodrigues       <cassio@inf.ufg.br>
- *	Plinio Júnior          <plinio@inf.ufg.br
+ *	Plinio Júnior          <plinio@inf.ufg.br>
+ *      Eduardo Horst          <eduardoquijano2@gmail.com>
+ * 
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,21 +51,71 @@ import sbstframe.problem.ProblemInterface;
 import sbstframe.results.Metrics;
    
 public abstract class AbstractEvolutionaryAlgorithm {
-
+    /**
+     * Fitness Function
+     */
     private FitnessFunction fitness;
+    
+    /**
+     * Population size
+     */
     private int popSize;
+    
+    /**
+     * Individual size
+     */
     private int indSize;
+    
+    /**
+     * Quantity of individuals choosen from elitism
+     */
     private int elitism;
+    
+    /**
+     * About the fitness function
+     * True - is maximizing
+     * False - is minimizing
+     */
     private boolean maximizing;
+    
+    /**
+     * Condition to terminate the execution
+     */
     private TerminationCondition terminationCondition;
   //  private MyTerminalCondition terminationCondition2;
+    
+    /**
+     * Evolution engine
+     */
     private EvolutionEngine<int[]> engine;
+    
+    /**
+     * Islando evolution engine
+     */
     private IslandEvolution<int[]> islandEngine;
+
+    /**
+     * Test source
+     */
     private ProblemInterface benchmark;
+    
+    /**
+     * ? related to island engine
+     */
     private int epoch;
+    
+    /**
+     * ? related to island engine
+     */
     private int migration;
     
     
+    /**
+     * Default constructor
+     * @param benchmark test source
+     * @param popSize population size
+     * @param indSize individual size
+     */
     public AbstractEvolutionaryAlgorithm(ProblemInterface benchmark, int popSize, int indSize) {
         this.benchmark = benchmark;
         this.popSize = popSize;
@@ -75,6 +127,11 @@ public abstract class AbstractEvolutionaryAlgorithm {
         this.epoch = -1;
     }
                 
+    /**
+     * Calls the evolve of engine (if migration == -1) or of 
+     * islandEngine(otherwise)
+     * @return 
+     */
     public int[] evolve() {
         
         if(migration == -1){
@@ -88,46 +145,94 @@ public abstract class AbstractEvolutionaryAlgorithm {
 
     }
    
+    /**
+     * Exposes popSize to overwrite
+     * @param popSize 
+     */
     public void setPopSize(int popSize) {
         this.popSize = popSize;
     }
     
+    /**
+     * Exposes popSize to read
+     * @return popSize
+     */
     public int getPopSize() {
         return popSize;
     }
 
+    /**
+     * Exposes elitism to overwrite
+     * @param elitism 
+     */
     public void setElitism(int elitism) {
         this.elitism = elitism;
     }
 
+    /**
+     * Exposes Maximizing to overwrite
+     * where true  - is Maximizing
+     *       false - is Minimizing
+     * @param maximizing 
+     */
     public void setMaximizing(boolean maximizing) {
         this.maximizing = maximizing;
     }
     
+    /**
+     * Exposes fitness to overwrite
+     * @param fitness 
+     */
     public void setFitnessFunction(FitnessFunction fitness) {
         this.fitness = fitness;
     }
     
+    /**
+     * Exposes fitness to Read
+     * @return fitness
+     */
     public FitnessFunction getFitnessFunction() {
         return this.fitness;
     }
     
+    /**
+     * Exposes evaluatorCallsTotal to read
+     * @return evalutorCallsTotal
+     */
     public int getEvaluatorCallsTotal() {
         return fitness.getEvaluatorCallsTotal();
     }
     
+    /**
+     * Exposes the evolution engine to read
+     * @return engine
+     */
     public EvolutionEngine<int[]> getEngine() {
         return engine;
     }
 
+    /**
+     * Exposes the evolutionEngine to read
+     * @param engine 
+     */
     public void setEngine(EvolutionEngine<int[]> engine) {
         this.engine = engine;
     }
     
+    /**
+     * Exposes the Island engine to read
+     * @return islandEngine
+     */
     public IslandEvolution<int[]> getIslandEngine() {
         return this.islandEngine;
     }
 
+    /**
+     * Sets the parameters for island algorithm usage
+     * @param engine island evolutionary engine
+     * @param migration migration
+     * @param epoch ?
+     */
     public void setIslandEngine(IslandEvolution<int[]> engine, int migration, int epoch) {
         this.islandEngine = engine;
         this.migration = migration;
@@ -135,6 +240,10 @@ public abstract class AbstractEvolutionaryAlgorithm {
     
     }
 
+    /**
+     * Set timelimit for the execution of the alghorithm
+     * @param time 
+     */
     public void setTime(int time) {
         if(this.terminationCondition == null){
             this.terminationCondition = new FitnessOrTime(benchmark.getScoreMax(), maximizing, time);
@@ -145,24 +254,44 @@ public abstract class AbstractEvolutionaryAlgorithm {
     public void setCallFitness(int maxCallFitness) {
             this.terminationCondition = new MyTerminalCondition(maxCallFitness, 0);
     }*/
-     
-     
+    
+    /**
+     * Exposes the test source to read
+     * @return benchmark
+     */
     public ProblemInterface getBenchmark() {
         return benchmark;
     }
     
+    /**
+     * Exposes indSize to read
+     * @return indSize
+     */
     public int getIndSize() {
         return indSize;
     }
     
+    
+    /**
+     * Exposes metrics to add ?
+     * @param metrics  
+     */
     public void addMetrics(Metrics metrics){
         this.engine.addEvolutionObserver(new EvolutionLogger(metrics));
     }
     
+    /**
+     * Exposes terminationCondition to read
+     * @return terminationCondition
+     */
     public TerminationCondition getTerminationCondition() {
         return terminationCondition;
     }
 
+    /**
+     * Exposese terminationCondition to overwrite
+     * @param terminationCondition 
+     */
     public void setTerminationCondition(TerminationCondition terminationCondition) {
         this.terminationCondition = terminationCondition;
     }

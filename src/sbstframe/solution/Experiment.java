@@ -1,13 +1,13 @@
 /**
- *
  * Copyright (c) 2014-2015,
  *	Beatriz Proto          <beatrizproto@gmail.com>
  *	Bruno Machado          <brunonmachado@outlook.com>	
  *	André Lôbo             <andre.assis.lobo@gmail.com> 
  *	Celso Camilo           <celso@inf.ufg.br>
- *  Auri Vincenzi          <auri@inf.ufg.br>                                             
+ *      Auri Vincenzi          <auri@inf.ufg.br>                                            
  *	Cassio Rodrigues       <cassio@inf.ufg.br>
- *	Plinio Júnior          <plinio@inf.ufg.br
+ *	Plinio Júnior          <plinio@inf.ufg.br>
+ *      Eduardo Horst          <eduardoquijano2@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,29 +48,77 @@ import sbstframe.solution.searchTechniques.AbstractEvolutionaryAlgorithm;
 import sbstframe.solution.searchTechniques.FitnessFunction;
 
 /**
-    se exec = 1 e true: imprime e salva evolucao da execucao e resultado final e mostra grafico da evolucao
-    se exec = 1 e false: imprime e salva resultado final da execucao
-    se exec > 1 e true: imprime e salva resultados finais das execucoes e mostra grafico do experimento
-    se exec > 1 e false: imprime e salva resultado geral do experimento  
-
+ * Experimentation class, controls the flux of execution of the experiment.
+ * 
+ * if execTotal = 1 and showData = true: print and save the evolution of execution and final result and shows chart of evolution
+ * if execTotal = 1 and showData = false: print and save final result
+ * if execTotal > 1 and showData = true: print and save final results and shows chart of the experiment
+ * if execTotal > 1 and showData = false: print and save geral result of the experiment  
+ *
  */
 public class Experiment {
+    /**
+     * Quantity of executions
+     */
     private int execTotal;
+    
+    /**
+     * Max time for the experiment
+     */
     private int timeMax;
+    
+    /**
+     * Metrics of the experiment
+     */
     private Metrics metrics;
+    
+    /**
+     * Test result source
+     */
     private ProblemInterface benchmark;
+    
+    /**
+     * data to use in the chart
+     */
     private XYSeries dataChart;
 
-    
+    /**
+     * Calls the default constructor with: execTotal,timeMax, "results/", true
+     * @param execTotal total executions
+     * @param timeMax time until timeout
+     */
     public Experiment(int execTotal, int timeMax) {
         this(execTotal, timeMax, "results/", true);
     }
+
+    /**
+     * Calls the default constructor with: execTotal,timeMax, outpath, true
+     * @param execTotal total executions
+     * @param timeMax time until timeout
+     * @param outPath path to output
+     */
     public Experiment(int execTotal, int timeMax, String outPath) {
         this(execTotal, timeMax, outPath, true);
     }
+
+    /**
+     * Calls the default constructor with: execTotal,timeMax, "results/", showData
+     * @param execTotal total executions
+     * @param timeMax time until timeout
+     * @param showData true to print a chart with the result
+     */
     public Experiment(int execTotal, int timeMax, boolean showData) {
         this(execTotal, timeMax, "results/", showData);
     }
+
+    /**
+     * Default constructor 
+     * @param execTotal total executions
+     * @param timeMax time until timeout
+     * @param outputDir diretory for the outputs
+     * @param showData true - shows an chart with the experiment results
+     *                 false - don't show a chart with the experiment results
+     */
     public Experiment(int execTotal, int timeMax, String outputDir, boolean showData) {
         this.execTotal = execTotal;
         this.timeMax = timeMax*1000;
@@ -78,9 +126,13 @@ public class Experiment {
         else this.dataChart = null;
         this.metrics = new Metrics(outputDir);
         metrics.setGraphData(dataChart);
-        
     }
 
+    /**
+     * Runs the experiment and returns the metrics
+     * @param alg algorithm to be used 
+     * @return metrics
+     */
     public Metrics run(AbstractEvolutionaryAlgorithm alg){
         metrics.setAlgInfo(alg.toString());
 

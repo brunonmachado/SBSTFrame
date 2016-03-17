@@ -55,6 +55,9 @@ import org.uncommons.watchmaker.framework.operators.IntArrayCrossover;
 import sbstframe.problem.ProblemInterface;
 import sbstframe.solution.searchTechniques.operators.IntArrayMutationOMAC;
 
+/**
+ * Class for exposing evolutionary strategy
+ */
 public class EvolutionaryStrategy extends AbstractEvolutionaryAlgorithm{
     private double crossRate, mutRate, classificatoryRate;
     private boolean plusSelection;

@@ -55,20 +55,72 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+/**
+ * Metric reader class for experiments
+ * 
+ * @author Eduardo Horst <Eddyosos at eduardoquijano2@gmail.com>
+ */
 public class Metrics {
+    /**
+     * Output diretory path
+     */
     private String outDir;
+    
+    /**
+     * Average score of the experiment
+     */
     private double averageScore;
+    
+    /**
+     * Max score of the experiment
+     */
     private double maxScore;
+    
+    /**
+     * Average time of the experiment
+     */
     private double averageTime;
+    
+    /**
+     * Standard deviation of the experiment
+     */
     private double stdDeviation;
+    
+    /**
+     * Quantity of calls for the evaluation function
+     */
     private int evaluatorCallsTotal;
+    
+    /**
+     * chart data
+     */
     private XYSeries graphData;
+    
+    /**
+     * chart instance
+     */
     private JFreeChart chart;
+    
+    /**
+     * output file
+     */
     private FileWriter outFile;
+    
+    /**
+     * Info about the algorithm
+     */
     private String algInfo;
+    
+    /**
+     * Best test subset
+     */
     private int[] bestSubset;
  //   private String operator;
 
+    /**
+     * Default constructor
+     * @param outDir Diretory for outputing the result
+     */
     public Metrics(String outDir){
         this.outDir = outDir;
         this.maxScore = 0;
@@ -81,14 +133,26 @@ public class Metrics {
      //   this.operator = null;
     }
     
+    /**
+     * Exposes graphData for overwrite
+     * @param graphData to be used by this class
+     */
     public void setGraphData(XYSeries graphData){
         this.graphData = graphData;
     }
     
+    /**
+     * Exposes graphData for reading
+     * @return 
+     */
     public XYSeries getGraphData() {
         return graphData;
     }
     
+    /**
+     * Draws a new chart, using graphData, and stores it in chart also outputs 
+     * it to file ./results/chart/jpg
+     */
     public void drawGraphic(){
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(graphData);
@@ -121,6 +185,11 @@ public class Metrics {
         }
     }
     
+    /**
+     * Saves the parameters in outFile as each column "\column\"
+     * @param columns Strings to be saved in outfile
+     * @throws IOException if an I/O error occurs
+     */
     public void saveOutput(String[] columns) throws IOException{
         for (String str : columns){
             outFile.append("\""+str+"\"");
@@ -129,6 +198,13 @@ public class Metrics {
         outFile.append("\n");
     }
     
+    /**
+     * Saves parametes to file to outDir/experiment.csv as
+     * \index\ \fitness\            - Header
+     * \index\ \fitness\            - Data passed in parameters
+     * @param index data to be saved as index
+     * @param fitness data to be saved as fitness
+     */
     public void saveExecutionOutput(int index, double fitness){        
          try {
             
@@ -143,6 +219,12 @@ public class Metrics {
         }
     }
     
+    /**
+     * Saves output with a call of saveOutput(data)
+     * where data is [maxScore, averageScore, stdDeviation, averageTime, 
+     * evaluatorCallsTotal]
+     * @throws IOException if an I/O error occurs 
+     */
     public void saveExperimentOutput() throws IOException{
         String attr[] = {"maxFitness", "averageScore", "stdDeviation",
             "time", "fitnessCalls", "algorithmInfo"};
@@ -161,22 +243,45 @@ public class Metrics {
         saveOutput(data);
     }
 
+    /**
+     * Exposes maxScore to overwrite
+     * @param maxScore
+     */
     public void setMaxScore(double maxScore) {
         this.maxScore = maxScore;
     }
 
+    /**
+     * Exposes stdDeviation to overwrite
+     * @param stdDeviation 
+     */
     public void setStdDeviation(double stdDeviation) {
         this.stdDeviation = stdDeviation;
     }
     
+    /**
+     * Exposes stdDeviation to overwrite
+     * @param evaluatorCallsTotal 
+     */
     public void setEvaluatorCallsTotal(int evaluatorCallsTotal) {
         this.evaluatorCallsTotal = evaluatorCallsTotal;
     }
     
+    /**
+     * Exposes outFile to read
+     * @return outFile
+     */
     public FileWriter getOutFile() {
         return outFile;
     }
 
+    /**
+     * Garants that outFile is a valid Writer to path passed as parameter
+     * If path is a file, path is open to append
+     * If path doesn't exists a new file is created with such path
+     * @param path to outputfile
+     * @throws IOException if I/O exeption occurs
+     */
     public void createOutputFile(String path) throws IOException {
         File file = new File(path);
         if (!file.exists()){
@@ -193,30 +298,59 @@ public class Metrics {
 
     }
 
-    
+    /**
+     * Exposes algInfo to read
+     * @return algInfo
+     */
     public String getAlgInfo() {
         return algInfo;
     }
 
+    /**
+     * Exposes algInfo to overwrite
+     * @param algInfo
+     */
     public void setAlgInfo(String algInfo) {
         this.algInfo = algInfo;
     }
     
+    /**
+     * Exposes averageScore to read
+     * @return averageScore
+     */
     public double getAverageScore() {
         return averageScore;
     }
     
+    /**
+     * Exposes averageScore to overwrite
+     * @param averageScore 
+     */
     public void setAverageScore(double averageScore) {
         this.averageScore = averageScore;
     }
 
+    /**
+     * Exposes averageTime to read
+     * @return averageTime
+     */
     public double getAverageTime() {
         return averageTime;
     }
 
+    /**
+     * Exposes averageTime to overwrite
+     * @param averageTime 
+     */
     public void setAverageTime(double averageTime) {
         this.averageTime = averageTime;
     }
+    
+    /**
+     * Constructs a string representation of this
+     * @return Score: averageScore; Time: averageTime; BestSubset:bestSubset[0] 
+     * bestSubset[1] bestSubset[2]...
+     */
     @Override
     public String toString(){
         String ret = "\n\nScore: "+String.format("%.6f", this.averageScore)+"; Time: "+
@@ -227,6 +361,10 @@ public class Metrics {
         
     }
 
+    /**
+     * Exposes bestSubset to overwrite
+     * @param bestSubset
+     */
     public void setBestSubset(int[] bestSubset) {
         this.bestSubset = bestSubset;
     }

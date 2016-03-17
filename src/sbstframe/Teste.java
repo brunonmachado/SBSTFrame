@@ -25,7 +25,7 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
 import org.uncommons.watchmaker.framework.termination.Stagnation;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
 import sbstframe.problem.Benchmarks;
-import sbstframe.problem.DefaultReport;
+import sbstframe.problem.DefaultReportLazy;
 import sbstframe.problem.ProblemInterface;
 import sbstframe.results.Metrics;
 import sbstframe.solution.Experiment;

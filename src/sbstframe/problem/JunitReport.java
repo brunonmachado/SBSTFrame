@@ -16,8 +16,6 @@
 package sbstframe.problem;
 
 import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.Map;
 import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
@@ -26,12 +24,7 @@ import junit.framework.TestSuite;
  * Implements an ProblemInterface in order to use SBSTFrame with {@see Junit}
  * @author Eduardo Horst
  */
-public class JunitReport implements ProblemInterface{
-    /**
-     * Holds the recently executed tests as Map<testRequisiteIndex, Map<testCaseIndex,result>>
-     */
-    private final Map<Integer, Map<Integer, Boolean>> testCache; //Stores the specified aumount of test cases results
-    
+public class JunitReport implements ProblemInterface{   
     /**
      * Holds all the test suites, were each one contains all test cases for one testRequisite
      */
@@ -48,8 +41,7 @@ public class JunitReport implements ProblemInterface{
     private final double scoreMax;
     
     /**
-     * 
-     * Constructor of the {@see JunitReport}
+     * Default Constructor of the {@see JunitReport}
      * @param testCasesOnTestRequirements all test cases against all mutants, each {@see TestSuite}
      * @param WorthLessReq the quantity of equal test cases
      * @param scoreMax the max score of any given test case
@@ -68,7 +60,6 @@ public class JunitReport implements ProblemInterface{
         }
         
         this.testCasesOnTestRequirements = testCasesOnTestRequirements;
-        this.testCache = new HashMap<>();
         this.WorthLessReq = WorthLessReq;
         this.scoreMax = scoreMax;
         
@@ -76,77 +67,30 @@ public class JunitReport implements ProblemInterface{
 
     /**
      * Gets test result of test case in the test requisite.
-     * This method records recently used test cases in order to give a faster
-     * answer, and only executes the test case if it isn't recorded
      * @param testCase test case index
      * @param testReq test requisite index
-     * @return {@see true} if the test was covered
-     *         {@see false} if the test wasn't covered
-     * @see runTest
-     * @see recordTest
+     * @return {@code true} if the test was covered
+     *         {@code false} if the test wasn't covered
      */
     @Override
     public boolean getTest(int testCase, int testReq) {
-        {
-            Map<Integer,Boolean> testRequisiteContainer;
-            testRequisiteContainer = testCache.get(testReq);
-            if(testRequisiteContainer != null) {
-                Boolean testResult;
-                testResult = testRequisiteContainer.get(testCase);
-                if(testResult != null) {
-                    return testResult;
-                }
-            }
-        }
-        
-        boolean result;
-        result = runTest(testCase, testReq);
-        recordTest(testCase, testReq, result);
-        
-        return result;
-    }
-    
-    /**
-     * Runs an test case and record it in testCache
-     * @param testCase test case index
-     * @param testReq test requisite index
-     * @param testResult test result to be recorded
-     * @see getTest
-     */
-    public void recordTest(int testCase, int testReq, boolean testResult) {
-        Map<Integer,Boolean> testRequisiteContainer;
-        testRequisiteContainer = testCache.get(testReq);
-        if(testRequisiteContainer == null) {    //Test cache doesn't contains the testReq
-            testRequisiteContainer = new HashMap<>();
-            testCache.put(testReq, testRequisiteContainer);
-        }
-        testRequisiteContainer.put(testCase, testResult);
-    }
-    
-    /**
-     * Runs testCase of testRequisite
-     * @param testCase test case index
-     * @param testReq test requisite index
-     * @return true if test was covered
-     *          false if test wasn't covered
-     */
-    public boolean runTest(int testCase, int testReq) {
         TestResult result;
         result = new TestResult();
         
-        {
-            TestSuite testReqContainer;
-            testReqContainer = testCasesOnTestRequirements[testReq];
-            
-            Test myTest;
-            myTest = testReqContainer.testAt(testCase);
-            myTest.run(result);
-        }
-        
+        TestSuite testReqContainer;
+        testReqContainer = testCasesOnTestRequirements[testReq];
+
+        Test myTest;
+        myTest = testReqContainer.testAt(testCase);
+        myTest.run(result);
         
         return result.wasSuccessful();
     }
 
+    /**
+     * Path to were benchmark will be saved
+     * @return path to benchmark
+     */
     @Override
     public String getBenchmarkPath() {
         return "benchmarks/lastJunitExec.csv";
@@ -171,7 +115,7 @@ public class JunitReport implements ProblemInterface{
     }
 
     /**
-     * Returns the quantity of equal test cases
+     * The quantity of equal test cases (set in constructor) 
      * @return the quantity
      */
     @Override
@@ -179,6 +123,10 @@ public class JunitReport implements ProblemInterface{
         return this.WorthLessReq;
     }
 
+    /**
+     * The max score (set in constructor)
+     * @return 
+     */
     @Override
     public double getScoreMax() {
         return this.scoreMax;

@@ -5,9 +5,10 @@
  *	Bruno Machado          <brunonmachado@outlook.com>	
  *	André Lôbo             <andre.assis.lobo@gmail.com> 
  *	Celso Camilo           <celso@inf.ufg.br>
- *  Auri Vincenzi          <auri@inf.ufg.br>                                             
+ *      Auri Vincenzi          <auri@inf.ufg.br>                                             
  *	Cassio Rodrigues       <cassio@inf.ufg.br>
- *	Plinio Júnior          <plinio@inf.ufg.br
+ *	Plinio Júnior          <plinio@inf.ufg.br>
+ *      Eduardo Horst          <eduardoquijano2@gomail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,17 +53,51 @@ import org.uncommons.watchmaker.framework.SteadyStateEvolutionEngine;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.IntArrayCrossover;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
-import org.uncommons.watchmaker.framework.selection.TournamentSelection;
 import sbstframe.problem.ProblemInterface;
 import sbstframe.solution.searchTechniques.operators.IntArrayFactory;
 import sbstframe.solution.searchTechniques.operators.IntArrayMutation;
 import sbstframe.solution.searchTechniques.operators.IntArrayMutationOMAC;
 
+/**
+ * EvolutionaryAlgorithm using Steady State 
+ */
 public class SteadyState extends AbstractEvolutionaryAlgorithm{
-    private double crossRate, mutRate, classificatoryRate;
+    
+    private double 
+            /**
+             * rate of crossing over 
+             */
+            crossRate,
+            /**
+             * rate of mutation
+             */
+            mutRate, 
+            /**
+             * rate of classification
+             */
+            classificatoryRate;
+    
+    /**
+     * ?
+     */
     private boolean forceSingle;
+    
+    /**
+     * ?
+     */
     private int selectionSize;
     
+    /**
+     * 
+     * @param benchmark
+     * @param popSize
+     * @param indSize
+     * @param crossRate
+     * @param mutRate
+     * @param selectionSize
+     * @param forceSingle
+     * @param selectionStrategy 
+     */
     public SteadyState(ProblemInterface benchmark, int popSize, int indSize,
             double crossRate, double mutRate, int selectionSize, boolean forceSingle, SelectionOperator selectionStrategy){
         
@@ -98,6 +133,18 @@ public class SteadyState extends AbstractEvolutionaryAlgorithm{
         
     }
     
+    /**
+     * 
+     * @param benchmark
+     * @param popSize
+     * @param indSize
+     * @param crossRate
+     * @param mutRate
+     * @param selectionSize
+     * @param forceSingle
+     * @param selectionStrategy
+     * @param classificatoryRate 
+     */
     public SteadyState(ProblemInterface benchmark, int popSize, int indSize,
             double crossRate, double mutRate, int selectionSize, boolean forceSingle, SelectionOperator selectionStrategy,double classificatoryRate ){
         
