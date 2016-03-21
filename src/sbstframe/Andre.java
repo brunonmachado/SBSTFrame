@@ -71,7 +71,7 @@ public class Andre {
                      
                 case 1:
                      System.out.println("Experimento 1 - EvolutionaryStrategy (1,7) OpOMMAC 10%");
-                     defaultReport = new DefaultReportLazy(Benchmarks.uniq);
+                     defaultReport = new DefaultReportLazy(Benchmarks.spaceResultByLine);
                      defaultReport = new CachedReport(defaultReport);
                      exp = new Experiment(2, 60);
 

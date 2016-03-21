@@ -151,7 +151,6 @@ public class DefaultReportLazy implements ProblemInterface {
             }
             while(reader.ready()) if(reader.read() == '\n') reqTotal++;
             
-            System.out.println("reqTotal - " + reqTotal + ". tcTotal - " + tcTotal);
         }
     }
     
