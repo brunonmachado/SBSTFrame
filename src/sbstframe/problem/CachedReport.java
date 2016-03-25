@@ -93,16 +93,6 @@ public class CachedReport implements ProblemInterface {
         cache.remove(cache.keySet().stream().skip(rand.nextInt(qntKeys)).findAny().get());
     }
     
-    
-    /**
-     * It transfers the call to toBeCached object
-     * @return toBeCached.getBenchamrkPath()
-     */
-    @Override
-    public String getBenchmarkPath() {
-        return toBeCached.getBenchmarkPath();
-    }
-
     /**
      * It transfers the call to toBeCached object
      * @return toBeCached.getTestCaseTotal()
@@ -121,24 +111,6 @@ public class CachedReport implements ProblemInterface {
         return toBeCached.getRequirementTotal();
     }
 
-    /**
-     * It transfers the call to toBeCached object
-     * @return toBeCached.getRequirementTotal()
-     */
-    @Override
-    public int getWorthlessReqTotal() {
-        return toBeCached.getWorthlessReqTotal();
-    }
-
-    /**
-     * It transfers the call to toBeCached object
-     * @return toBeCached.getRequirementTotal()
-     */
-    @Override
-    public double getScoreMax() {
-        return toBeCached.getScoreMax();
-    }
-    
     /**
      * Storage for the key identifier used in hashmap
      */

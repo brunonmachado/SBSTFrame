@@ -144,7 +144,7 @@ public class FitnessFunction implements FitnessEvaluator<int[]>{
      * @return percentual covered;
      */
     public double objectiveFunction(int covered){
-        return (double) covered / (double)(reqTotal - this.benchmark.getWorthlessReqTotal());
+        return (double) covered / (double)(reqTotal);// - this.benchmark.getWorthlessReqTotal());
     }
 
     /**

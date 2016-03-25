@@ -51,7 +51,6 @@ package sbstframe.problem;
  * @see DefaultReport, it reads according to the proposed layout
  * 
  */
-
 public interface ProblemInterface {
     
     /**
@@ -66,13 +65,6 @@ public interface ProblemInterface {
     
     /**
      * 
-     * @return the benchmark file path
-     */
-    public String getBenchmarkPath();
-    
-    
-    /**
-     * 
      * @return the total amount of test cases
      */
     public int getTestCaseTotal();
@@ -82,18 +74,6 @@ public interface ProblemInterface {
      * @return the total amount of requirements
      */
     public int getRequirementTotal();
-   
-    /**
-     * 
-     * @return total amount of requirements equivalents
-     */
-    public int getWorthlessReqTotal(); 
-    
-    /**
-     * 
-     * @return maximum score possible influenced by requiriments that can not be covered
-     */
-    public double getScoreMax();
 }
 
     

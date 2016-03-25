@@ -40,9 +40,8 @@
  */
 package sbstframe.problem;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.HashMap;
+import java.io.IOException;
 
 /**
  * Reads the benchmark file using the proposed layout
@@ -51,146 +50,61 @@ import java.util.HashMap;
  * @see ProblemInterface
  * @author Andre/Beatriz/Bruno/Eduardo
  */
-public class DefaultReport implements ProblemInterface {
+public class DefaultReport extends DefaultReportLazy {
 
-    private String benchmarkPath;
-    private int tcTotal; //Number of test cases
-    private int reqTotal; //Number of requirements
-    private int worthlessReqTotal; //Number of worthless requirements
-    private final HashMap<Integer, HashMap<Integer, Integer>> tests; //tests<reqNum, Hash testCase <tcNum, reqStatus>>
-    private double scoreMax;
-
-    public DefaultReport(String path, double scoreMax, int worthlessReqTotal) {
-        this.benchmarkPath = path;
-        this.tcTotal = -1;
-        this.reqTotal = -1;
-        this.worthlessReqTotal = worthlessReqTotal;
-        this.tests = new HashMap<>();
-        this.scoreMax = scoreMax;
+    private final boolean[][] tests; //test[req][tc]
+    
+    /**
+     * Constructor for Default Report
+     * @param path
+     * @param scoreMax
+     * @param worthlessReqTotal
+     * @throws IOException 
+     */
+    public DefaultReport(String path, double scoreMax, int worthlessReqTotal) throws IOException {
+        super(path, scoreMax, worthlessReqTotal);
+        tests = new boolean[getRequirementTotal()][getTestCaseTotal()];
         readBenchmarkFile();
-    }
-
-    public DefaultReport(Benchmarks benchmark) {
-        this.benchmarkPath = "benchmarks/";
-        this.tcTotal = -1;
-        this.reqTotal = -1;
-        this.scoreMax = 1.0;
-        switch (benchmark) {
-            case bubcorrecto:
-                benchmarkPath += "bubcorrecto.csv";
-                worthlessReqTotal = 12;
-                break;
-            case fourballs:
-                benchmarkPath += "fourballs.csv";
-                worthlessReqTotal = 44;
-                break;
-            case mid:
-                benchmarkPath += "mid.csv";
-                worthlessReqTotal = 43;
-                break;
-            case trityp:
-                benchmarkPath += "trityp.csv";
-                worthlessReqTotal = 70;
-                break;
-            case cal:
-                benchmarkPath += "cal.csv";
-                worthlessReqTotal = 344;
-                this.scoreMax = 0.99742;
-                break;
-            case comm:
-                benchmarkPath += "comm.csv";
-                worthlessReqTotal = 222;
-                break;
-            case look:
-                benchmarkPath += "look.csv";
-                worthlessReqTotal = 233;
-                break;
-            case uniq:
-                benchmarkPath += "uniq.csv";
-                worthlessReqTotal = 224;
-                break;
-
-            case spaceResultByMethod:
-                benchmarkPath += "spaceResultByMethod.csv";
-                worthlessReqTotal = 0;
-                break;
-
-            case spaceResultByLine:
-                benchmarkPath += "spaceResultByLine.csv";
-                worthlessReqTotal = 0;
-                break;
-
-        }
-        tests = new HashMap<>();
-        readBenchmarkFile();
-    }
-
-    private void readBenchmarkFile() {
-        try {
-            BufferedReader buff = new BufferedReader(new FileReader(benchmarkPath));
-            String temp, tokens[];
-
-            if ((temp = buff.readLine()) == null) {
-                System.err.println("Benchmark at " + benchmarkPath + " is empty");
-            }
-            this.tcTotal = temp.length() / 2;
-            System.out.println("Total de Caso de teste: " + tcTotal);
-            int reqCount = 0;
-            do {
-                HashMap<Integer, Integer> tcResult = new HashMap<>(); //<tcNum, reqStatus>
-
-                tokens = temp.split(";");
-
-                for (int i = 0; i < tokens.length; i++) {
-                    tcResult.put((Integer) i, Integer.valueOf(tokens[i]));
-                }
-
-                this.tests.put(reqCount, tcResult); //link requirements with its list
-                reqCount++;
-            } while ((temp = buff.readLine()) != null);
-
-            this.reqTotal = reqCount;
-            System.out.println("Total de Metodos: " + reqTotal);
-            buff.close();
-
-        } catch (Exception e) {
-            System.out.println("\nError reading file: " + benchmarkPath);
-        }
-    }
-
-    @Override
-    public String getBenchmarkPath() {
-        return this.benchmarkPath;
-    }
-
-    @Override
-    public int getTestCaseTotal() {
-        return this.tcTotal;
-    }
-
-    @Override
-    public int getRequirementTotal() {
-        return this.reqTotal;
     }
 
     /**
-     * Default implementation of the {@see ProblemInterface.getTest}
-     *
-     * @see ProblemInterface.getTest
+     * Constructor for Default Report
+     * @param benchmark
+     * @throws IOException 
+     */
+    public DefaultReport(Benchmarks benchmark) throws IOException {
+        super(benchmark);
+        tests = new boolean[getRequirementTotal()][getTestCaseTotal()];
+        readBenchmarkFile();
+    }
+
+    /**
+     * Reads the benchark file and fills tests array
+     * @throws IOException 
+     */
+    private void readBenchmarkFile() throws IOException {
+        FileReader reader = new FileReader(getBenchmarkPath());
+        int tc, req;
+        tc = req = 0;
+        final int reqTotal = getRequirementTotal();
+        while(req < reqTotal) {
+            switch (reader.read()) {
+                case TEST_FAILED: tests[req][tc] = false; break;
+                case TEST_PASSED: tests[req][tc] = true;  break;
+                case CASE_SEPARATOR: tc++; break;
+                case REQ_SEPARATOR: req++; tc = 0; break;
+            }
+        }
+    }
+
+    /**
+     * Returns test result
+     * @param testCase
+     * @param testReq
+     * @return 
      */
     @Override
     public boolean getTest(int testCase, int testReq) {
-        return this.tests.get(testReq).get(testCase) == 1;
+        return tests[testReq][testCase];
     }
-
-    @Override
-    public int getWorthlessReqTotal() {
-        return this.worthlessReqTotal;
-    }
-
-    @Override
-    public double getScoreMax() {
-        return this.scoreMax;
-    }
-
 }

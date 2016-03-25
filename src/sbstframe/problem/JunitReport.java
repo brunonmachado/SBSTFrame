@@ -88,15 +88,6 @@ public class JunitReport implements ProblemInterface{
     }
 
     /**
-     * Path to were benchmark will be saved
-     * @return path to benchmark
-     */
-    @Override
-    public String getBenchmarkPath() {
-        return "benchmarks/lastJunitExec.csv";
-    }
-
-    /**
      * Counts the quantity of test cases
      * @return the count
      */
@@ -114,22 +105,4 @@ public class JunitReport implements ProblemInterface{
         return testCasesOnTestRequirements.length;
     }
 
-    /**
-     * The quantity of equal test cases (set in constructor) 
-     * @return the quantity
-     */
-    @Override
-    public int getWorthlessReqTotal() {
-        return this.WorthLessReq;
-    }
-
-    /**
-     * The max score (set in constructor)
-     * @return 
-     */
-    @Override
-    public double getScoreMax() {
-        return this.scoreMax;
-    }
-    
 }

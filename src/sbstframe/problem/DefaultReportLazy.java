@@ -49,7 +49,10 @@ import java.io.IOException;
  * @author Andre/Beatriz/Bruno/Eduardo
  */
 public class DefaultReportLazy implements ProblemInterface {
-    private final static char SEPARATOR = ';'; //Separator of data in the benchmark;
+    public final static char CASE_SEPARATOR = ';'; //Separator of testCases in benchmark
+    public final static char REQ_SEPARATOR = '\n'; //Separator of testRequirements in benchmark 
+    public final static char TEST_PASSED = '1'; //Mark test passed
+    public final static char TEST_FAILED = '0'; //Mark test failed
     
     private final String benchmarkPath; //Path to benchmark file
     private int tcTotal; //Number of test cases
@@ -91,17 +94,16 @@ public class DefaultReportLazy implements ProblemInterface {
     private void sizeFile() throws IOException {
         try (FileReader reader = new FileReader(benchmarkPath)) {
             reqTotal = tcTotal = 0;
-            
             boolean lineOver = false;
+
             while(reader.ready() && !lineOver) switch (reader.read()) {
-                case SEPARATOR:
-                    tcTotal++;
-                    break;
-                case '\n':
-                    lineOver = true;
-                    break;
+                case CASE_SEPARATOR: tcTotal++; break;
+                case REQ_SEPARATOR: lineOver = true; break;
+                case TEST_FAILED: 
+                case TEST_PASSED: break;
+                default: throw new RuntimeException();
             }
-            while(reader.ready()) if(reader.read() == '\n') reqTotal++;
+            while(reader.ready()) if(reader.read() == REQ_SEPARATOR) reqTotal++;
         }
     }
     
@@ -109,8 +111,7 @@ public class DefaultReportLazy implements ProblemInterface {
      * Path to benchmark path
      * @return path
      */
-    @Override
-    public String getBenchmarkPath() {
+    public final String getBenchmarkPath() {
         return this.benchmarkPath;
     }
 
@@ -119,7 +120,7 @@ public class DefaultReportLazy implements ProblemInterface {
      * @return count
      */
     @Override
-    public int getTestCaseTotal() {
+    public final int getTestCaseTotal() {
         return this.tcTotal;
     }
 
@@ -128,7 +129,7 @@ public class DefaultReportLazy implements ProblemInterface {
      * @return count
      */
     @Override
-    public int getRequirementTotal() {
+    public final int getRequirementTotal() {
         return this.reqTotal;
     }
 
@@ -141,7 +142,11 @@ public class DefaultReportLazy implements ProblemInterface {
     public boolean getTest(int testCase, int testReq) {
         try(FileReader reader = new FileReader(benchmarkPath)) {
             reader.skip((tcTotal*2 + 1) * testReq + 2 * testCase);
-            return reader.read() == '1';
+            switch(reader.read()) {
+                case TEST_PASSED: return true;
+                case TEST_FAILED: return false;
+                default: throw new RuntimeException();
+            }
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -151,7 +156,6 @@ public class DefaultReportLazy implements ProblemInterface {
      * Quantity of repeated test cases
      * @return 
      */
-    @Override
     public int getWorthlessReqTotal() {
         return this.worthlessReqTotal;
     }
@@ -160,7 +164,6 @@ public class DefaultReportLazy implements ProblemInterface {
      * Max score to be considerated
      * @return 
      */
-    @Override
     public double getScoreMax() {
         return this.scoreMax;
     }

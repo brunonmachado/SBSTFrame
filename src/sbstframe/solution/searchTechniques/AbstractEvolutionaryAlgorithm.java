@@ -246,7 +246,7 @@ public abstract class AbstractEvolutionaryAlgorithm {
      */
     public void setTime(int time) {
         if(this.terminationCondition == null){
-            this.terminationCondition = new FitnessOrTime(benchmark.getScoreMax(), maximizing, time);
+            this.terminationCondition = new FitnessOrTime(/*benchmark.getScoreMax()*/ 1, maximizing, time);
         }
     }
     

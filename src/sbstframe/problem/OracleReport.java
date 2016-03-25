@@ -94,15 +94,6 @@ public class OracleReport implements ProblemInterface {
     }
 
     /**
-     * BenchmarkPath of the mutants
-     * @return the path
-     */
-    @Override
-    public String getBenchmarkPath() {
-        return "OracleReport";
-    }
-
-    /**
      * Quantity of test cases
      * @return the quantity 
      */
@@ -119,23 +110,4 @@ public class OracleReport implements ProblemInterface {
     public int getRequirementTotal() {
         return mutants.length;
     }
-
-    /**
-     * Quantity of equal requirements in the mutants
-     * @return  the quantity
-     */
-    @Override
-    public int getWorthlessReqTotal() {
-        return 0;
-    }
-
-    /**
-     * Best score in the mutants
-     * @return the best score
-     */
-    @Override
-    public double getScoreMax() {
-        return 0;
-    }
-    
 }
