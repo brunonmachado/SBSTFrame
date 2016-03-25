@@ -40,7 +40,6 @@
  */
 package sbstframe.problem;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -50,14 +49,13 @@ import java.io.IOException;
  * @author Andre/Beatriz/Bruno/Eduardo
  */
 public class DefaultReportLazy implements ProblemInterface {
-
-    private final static char SEPARATOR = ';';
+    private final static char SEPARATOR = ';'; //Separator of data in the benchmark;
     
-    private String benchmarkPath;
+    private final String benchmarkPath; //Path to benchmark file
     private int tcTotal; //Number of test cases
     private int reqTotal; //Number of requirements
     private int worthlessReqTotal; //Number of worthless requirements
-    private double scoreMax;
+    private double scoreMax; //Maximum score obtainable from this subset
     
     /**
      * Default constructor for {@code ProblemInterface}
@@ -65,70 +63,24 @@ public class DefaultReportLazy implements ProblemInterface {
      * @param scoreMax Max score to be considerated
      * @param worthlessReqTotal  quantity of useless test requirements (whose 
      * will allways return the same test result as some other test requirement)
+     * @throws java.io.IOException if a problem is found on reading the file
      */
     public DefaultReportLazy(String path, double scoreMax, int worthlessReqTotal) throws IOException {
         this.benchmarkPath = path;
-        this.tcTotal = -1;
-        this.reqTotal = -1;
         this.worthlessReqTotal = worthlessReqTotal;
         this.scoreMax = scoreMax;
         sizeFile();
     }
 
-    public DefaultReportLazy(Benchmarks benchmark) throws IOException{
-        this.benchmarkPath = "benchmarks/";
-        this.tcTotal = -1;
-        this.reqTotal = -1;
-        this.scoreMax = 1.0;
-        switch (benchmark) {
-            case bubcorrecto:
-                benchmarkPath += "bubcorrecto.csv";
-                worthlessReqTotal = 12;
-                break;
-            case fourballs:
-                benchmarkPath += "fourballs.csv";
-                worthlessReqTotal = 44;
-                break;
-            case mid:
-                benchmarkPath += "mid.csv";
-                worthlessReqTotal = 43;
-                break;
-            case trityp:
-                benchmarkPath += "trityp.csv";
-                worthlessReqTotal = 70;
-                break;
-            case cal:
-                benchmarkPath += "cal.csv";
-                worthlessReqTotal = 344;
-                this.scoreMax = 0.99742;
-                break;
-            case comm:
-                benchmarkPath += "comm.csv";
-                worthlessReqTotal = 222;
-                break;
-            case look:
-                benchmarkPath += "look.csv";
-                worthlessReqTotal = 233;
-                break;
-            case uniq:
-                benchmarkPath += "uniq.csv";
-                worthlessReqTotal = 224;
-                break;
-
-            case spaceResultByMethod:
-                benchmarkPath += "spaceResultByMethod.csv";
-                worthlessReqTotal = 0;
-                break;
-
-            case spaceResultByLine:
-                benchmarkPath += "spaceResultByLine.csv";
-                worthlessReqTotal = 0;
-                break;
-
-        }
-        
-        
-        sizeFile();
+    /**
+     * Default constructor for ProblemInterface using a default benchmark
+     * @param benchmark non null benchmark
+     * @throws NullPointerException if benchmark is null
+     */
+    public DefaultReportLazy(Benchmarks benchmark) {
+        this.benchmarkPath = benchmark.getPath();
+        this.tcTotal = benchmark.getTotalTestCase();
+        this.reqTotal = benchmark.getTotalTestReq();
     }
 
     /**
@@ -137,7 +89,7 @@ public class DefaultReportLazy implements ProblemInterface {
      * @throws IOException if benchmarkPath file doesn't exists
      */
     private void sizeFile() throws IOException {
-        try (FileReader reader = new FileReader(new File(benchmarkPath))) {
+        try (FileReader reader = new FileReader(benchmarkPath)) {
             reqTotal = tcTotal = 0;
             
             boolean lineOver = false;
@@ -150,7 +102,6 @@ public class DefaultReportLazy implements ProblemInterface {
                     break;
             }
             while(reader.ready()) if(reader.read() == '\n') reqTotal++;
-            
         }
     }
     
@@ -187,19 +138,14 @@ public class DefaultReportLazy implements ProblemInterface {
      * @see ProblemInterface.getTest
      */
     @Override
-    @SuppressWarnings("empty-statement")
     public boolean getTest(int testCase, int testReq) {
-         try(FileReader reader = new FileReader(benchmarkPath)) {
+        try(FileReader reader = new FileReader(benchmarkPath)) {
             reader.skip((tcTotal*2 + 1) * testReq + 2 * testCase);
             return reader.read() == '1';
-            
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        
-}
-        
-    
+    }
     
     /**
      * Quantity of repeated test cases
@@ -218,7 +164,4 @@ public class DefaultReportLazy implements ProblemInterface {
     public double getScoreMax() {
         return this.scoreMax;
     }
-
-    
-
 }

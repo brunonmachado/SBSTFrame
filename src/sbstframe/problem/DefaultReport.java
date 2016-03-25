@@ -46,7 +46,7 @@ import java.util.HashMap;
 
 /**
  * Reads the benchmark file using the proposed layout
- * DO NOT USE WITH CACHED REPORT, this implemaentation has it's own way of storing
+ * DO NOT USE WITH CACHED REPORT, this implementation has it's own way of storing
  * data and thus doesn't need to be cached
  * @see ProblemInterface
  * @author Andre/Beatriz/Bruno/Eduardo
