@@ -18,52 +18,43 @@ package sbstframe.problem;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class for storage of test results in order to not need re-tests.
  * Be aware, it only caches getTest() results.
  * @author Eduardo Horst
  */
-public class CachedReport implements ProblemInterface {
-    private ProblemInterface toBeCached;
-    private Map<Key, Boolean> cache;
+public class CachedProblem extends ProblemDecorator {
+    private final Map<Key, Boolean> cache;
     private final int MAX_KEYS;
-    private int qntKeys;
-    private Random rand;
+    private final Random rand;
     
     /**
      * Default Constructor
      * sets the max quantity of entrys in to 3000
      * @param myProblem The ProblemInterface to be cached
      */
-    public CachedReport(ProblemInterface myProblem) {
-        if(myProblem == null) {
-            String msg = "ProblemInterface myProblem can't be null";
-            throw new NullPointerException(msg);
-        }
+    public CachedProblem(IProblem myProblem) {
+        super(myProblem);
         MAX_KEYS = 3000;
-        cache = new HashMap(MAX_KEYS);
-        qntKeys = 0;
-        
-        this.toBeCached = myProblem;
+        cache = new ConcurrentHashMap<>(MAX_KEYS);
+
         rand = new Random();
     }
     
     /**
      * Constructor enabling the max quantity of keys in this cache
-     * @param toBeCached
+     * @param myProblem
      * @param MAX_KEYS max entrys to be saved (after entrys will be replaced)
      */
-    public CachedReport(ProblemInterface toBeCached, int MAX_KEYS) {
-        if(toBeCached == null) throw new NullPointerException();
+    public CachedProblem(IProblem myProblem, int MAX_KEYS) {
+        super(myProblem);
         
-        this.toBeCached = toBeCached;
         this.MAX_KEYS = MAX_KEYS;
         cache = new HashMap<>(MAX_KEYS);
         rand = new Random();
     }
-    
-    
     
     /**
      * Returns the result of the same call for myProblem.getTest() (given in the 
@@ -71,44 +62,26 @@ public class CachedReport implements ProblemInterface {
      * call in the future.
      * Be aware that since it only calls myProblem.getTest() once, it will all-
      * ways return the same result (given same parameters).
+     * @param testCase
+     * @param testReq
      * @return 
      */
     @Override
-    public synchronized boolean getTest(int testCase, int testReq) {
+    public boolean getTest(int testCase, int testReq) {
         final Key currentKey;
         currentKey = new Key(testCase, testReq);
         
-        return cache.computeIfAbsent(currentKey, 
-            (Key myKey) -> {
-                if(qntKeys > MAX_KEYS) removeRandomKey();
-                else qntKeys++;
-                return toBeCached.getTest(myKey.testCase, myKey.testReq);
-            });
+        return cache.computeIfAbsent(currentKey, (Key myKey) -> {
+            while(cache.size() >= MAX_KEYS) removeRandomKey();
+            return problem.getTest(myKey.testCase, myKey.testReq);
+        });
     }
     
     /**
      * Removes a random key from this cache
      */
     private void removeRandomKey() {
-        cache.remove(cache.keySet().stream().skip(rand.nextInt(qntKeys)).findAny().get());
-    }
-    
-    /**
-     * It transfers the call to toBeCached object
-     * @return toBeCached.getTestCaseTotal()
-     */
-    @Override
-    public int getTestCaseTotal() {
-        return toBeCached.getTestCaseTotal();
-    }
-
-    /**
-     * It transfers the call to toBeCached object
-     * @return toBeCached.getRequirementTotal()
-     */
-    @Override
-    public int getRequirementTotal() {
-        return toBeCached.getRequirementTotal();
+        cache.remove(cache.keySet().stream().skip(rand.nextInt(cache.size())).findAny().get());
     }
 
     /**

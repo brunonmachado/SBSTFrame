@@ -51,7 +51,7 @@ package sbstframe.problem;
  * @see DefaultReport, it reads according to the proposed layout
  * 
  */
-public interface ProblemInterface {
+public interface IProblem {
     
     /**
      * Function to get the results of the tests

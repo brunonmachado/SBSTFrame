@@ -50,7 +50,7 @@ import java.io.IOException;
  * @see ProblemInterface
  * @author Andre/Beatriz/Bruno/Eduardo
  */
-public class DefaultReport extends DefaultReportLazy {
+public class DefaultProblem extends DefaultProblemLazy {
 
     private final boolean[][] tests; //test[req][tc]
     
@@ -61,7 +61,7 @@ public class DefaultReport extends DefaultReportLazy {
      * @param worthlessReqTotal
      * @throws IOException 
      */
-    public DefaultReport(String path, double scoreMax, int worthlessReqTotal) throws IOException {
+    public DefaultProblem(String path, double scoreMax, int worthlessReqTotal) throws IOException {
         super(path, scoreMax, worthlessReqTotal);
         tests = new boolean[getRequirementTotal()][getTestCaseTotal()];
         readBenchmarkFile();
@@ -72,7 +72,7 @@ public class DefaultReport extends DefaultReportLazy {
      * @param benchmark
      * @throws IOException 
      */
-    public DefaultReport(Benchmarks benchmark) throws IOException {
+    public DefaultProblem(Benchmarks benchmark) throws IOException {
         super(benchmark);
         tests = new boolean[getRequirementTotal()][getTestCaseTotal()];
         readBenchmarkFile();
@@ -80,6 +80,7 @@ public class DefaultReport extends DefaultReportLazy {
 
     /**
      * Reads the benchark file and fills tests array
+     * @throws RuntimeException if file is an invalid file
      * @throws IOException 
      */
     private void readBenchmarkFile() throws IOException {
@@ -93,6 +94,7 @@ public class DefaultReport extends DefaultReportLazy {
                 case TEST_PASSED: tests[req][tc] = true;  break;
                 case CASE_SEPARATOR: tc++; break;
                 case REQ_SEPARATOR: req++; tc = 0; break;
+                default: throw new RuntimeException("BAD FILE");
             }
         }
     }

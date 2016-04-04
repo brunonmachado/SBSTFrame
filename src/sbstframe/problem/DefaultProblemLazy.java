@@ -45,10 +45,10 @@ import java.io.IOException;
 
 /**
  * Reads the benchmark file using the proposed layout
- * @see ProblemInterface
+ * @see IProblem
  * @author Andre/Beatriz/Bruno/Eduardo
  */
-public class DefaultReportLazy implements ProblemInterface {
+public class DefaultProblemLazy implements IProblem {
     public final static char CASE_SEPARATOR = ';'; //Separator of testCases in benchmark
     public final static char REQ_SEPARATOR = '\n'; //Separator of testRequirements in benchmark 
     public final static char TEST_PASSED = '1'; //Mark test passed
@@ -68,7 +68,7 @@ public class DefaultReportLazy implements ProblemInterface {
      * will allways return the same test result as some other test requirement)
      * @throws java.io.IOException if a problem is found on reading the file
      */
-    public DefaultReportLazy(String path, double scoreMax, int worthlessReqTotal) throws IOException {
+    public DefaultProblemLazy(String path, double scoreMax, int worthlessReqTotal) throws IOException {
         this.benchmarkPath = path;
         this.worthlessReqTotal = worthlessReqTotal;
         this.scoreMax = scoreMax;
@@ -80,7 +80,7 @@ public class DefaultReportLazy implements ProblemInterface {
      * @param benchmark non null benchmark
      * @throws NullPointerException if benchmark is null
      */
-    public DefaultReportLazy(Benchmarks benchmark) {
+    public DefaultProblemLazy(Benchmarks benchmark) {
         this.benchmarkPath = benchmark.getPath();
         this.tcTotal = benchmark.getTotalTestCase();
         this.reqTotal = benchmark.getTotalTestReq();

@@ -17,12 +17,12 @@ package sample.junit;
 
 import junit.framework.TestSuite;
 import org.uncommons.watchmaker.framework.termination.GenerationCount;
-import sbstframe.problem.JunitReport;
-import sbstframe.problem.ProblemInterface;
+import sbstframe.problem.JunitProblem;
 import sbstframe.results.Metrics;
 import sbstframe.solution.Experiment;
 import sbstframe.solution.searchTechniques.AbstractEvolutionaryAlgorithm;
 import sbstframe.solution.searchTechniques.RandomAlgorithm;
+import sbstframe.problem.IProblem;
 
 /**
  * Testing the Junit integration
@@ -35,7 +35,7 @@ public class JunitTest {
      */
     public static void main(String[] args) {
         //framework's benchmark and algorithm
-        ProblemInterface defaultReport;
+        IProblem defaultReport;
 
         //total of executions, max time in seconds for each execution, 
         //optional: results folder and/or if show evolution
@@ -51,7 +51,7 @@ public class JunitTest {
         testCasesOnMutants[3] = new TestSuite(sample.junit.mutantes.m3.MoneyTest.class);
         testCasesOnMutants[4] = new TestSuite(sample.junit.mutantes.m4.MoneyTest.class);
 
-        defaultReport = new JunitReport(testCasesOnMutants, 0, 0);
+        defaultReport = new JunitProblem(testCasesOnMutants, 0, 0);
         exp = new Experiment(1, 60);
 
         //algorithm(benchmark, popsize, indsize, crossover rate, mutation rate)

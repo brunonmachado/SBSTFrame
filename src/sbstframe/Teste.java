@@ -25,12 +25,12 @@ import org.uncommons.watchmaker.framework.termination.GenerationCount;
 import org.uncommons.watchmaker.framework.termination.Stagnation;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
 import sbstframe.problem.Benchmarks;
-import sbstframe.problem.DefaultReportLazy;
-import sbstframe.problem.ProblemInterface;
+import sbstframe.problem.DefaultProblemLazy;
 import sbstframe.results.Metrics;
 import sbstframe.solution.Experiment;
 import sbstframe.solution.searchTechniques.*;
 import sbstframe.solution.searchTechniques.operators.FitnessOrTime;
+import sbstframe.problem.IProblem;
 
 public class Teste {
     /*

@@ -46,7 +46,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.uncommons.watchmaker.framework.FitnessEvaluator;
-import sbstframe.problem.ProblemInterface;
+import sbstframe.problem.IProblem;
 
 /**
  * Fitness function for evaluating individuals 
@@ -60,20 +60,19 @@ public class FitnessFunction implements FitnessEvaluator<int[]>{
     /**
      * Test source
      */
-    private ProblemInterface benchmark;
+    private IProblem benchmark;
     
     /**
      * Quantity of times which evaluation function was called
      */
     private static int evaluationCalls = 0;
    
-    public FitnessFunction(ProblemInterface benchmark){
+    public FitnessFunction(IProblem benchmark){
         this.reqTotal = benchmark.getRequirementTotal();
         this.benchmark = benchmark;
         //this.evaluationCalls = 0;
     }
     
-
     /**
      * Evaluates the individual
      * @param candidate individual

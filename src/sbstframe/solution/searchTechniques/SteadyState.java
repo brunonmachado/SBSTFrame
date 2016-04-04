@@ -53,10 +53,10 @@ import org.uncommons.watchmaker.framework.SteadyStateEvolutionEngine;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.IntArrayCrossover;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
-import sbstframe.problem.ProblemInterface;
 import sbstframe.solution.searchTechniques.operators.IntArrayFactory;
 import sbstframe.solution.searchTechniques.operators.IntArrayMutation;
 import sbstframe.solution.searchTechniques.operators.IntArrayMutationOMAC;
+import sbstframe.problem.IProblem;
 
 /**
  * EvolutionaryAlgorithm using Steady State 
@@ -98,7 +98,7 @@ public class SteadyState extends AbstractEvolutionaryAlgorithm{
      * @param forceSingle
      * @param selectionStrategy 
      */
-    public SteadyState(ProblemInterface benchmark, int popSize, int indSize,
+    public SteadyState(IProblem benchmark, int popSize, int indSize,
             double crossRate, double mutRate, int selectionSize, boolean forceSingle, SelectionOperator selectionStrategy){
         
         super(benchmark, popSize, indSize);
@@ -145,7 +145,7 @@ public class SteadyState extends AbstractEvolutionaryAlgorithm{
      * @param selectionStrategy
      * @param classificatoryRate 
      */
-    public SteadyState(ProblemInterface benchmark, int popSize, int indSize,
+    public SteadyState(IProblem benchmark, int popSize, int indSize,
             double crossRate, double mutRate, int selectionSize, boolean forceSingle, SelectionOperator selectionStrategy,double classificatoryRate ){
         
         super(benchmark, popSize, indSize);

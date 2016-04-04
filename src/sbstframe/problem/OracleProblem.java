@@ -21,9 +21,9 @@ import java.lang.reflect.Method;
 /**
  * Implements an generic use of ProblemInterface for mutation test using an Oracle
  * @author Eduardo Horst
- * @see ProblemInterface
+ * @see IProblem
  */
-public class OracleReport implements ProblemInterface {
+public class OracleProblem implements IProblem {
     /**
      * Holds the Oracle also known as the original program results
      */
@@ -55,7 +55,7 @@ public class OracleReport implements ProblemInterface {
      * @param parameters an matrix  of parameters
      * @param testingMethod 
      */
-    public OracleReport(Object oracle, Object[] mutants, Object[][] parameters, Method testingMethod) {
+    public OracleProblem(Object oracle, Object[] mutants, Object[][] parameters, Method testingMethod) {
         this.oracle = oracle;
         this.mutants = mutants;
         this.parameters = parameters;

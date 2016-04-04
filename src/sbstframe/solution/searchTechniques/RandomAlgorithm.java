@@ -49,12 +49,12 @@ import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.GenerationalEvolutionEngine;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
-import sbstframe.problem.ProblemInterface;
 import sbstframe.solution.searchTechniques.operators.IntArrayFactory;
 import sbstframe.solution.searchTechniques.operators.IntArrayMutationAll;
+import sbstframe.problem.IProblem;
 
 public class RandomAlgorithm extends AbstractEvolutionaryAlgorithm{
-    public RandomAlgorithm(ProblemInterface benchmark, int popSize, int indSize){
+    public RandomAlgorithm(IProblem benchmark, int popSize, int indSize){
         
         super(benchmark, popSize, indSize);
         

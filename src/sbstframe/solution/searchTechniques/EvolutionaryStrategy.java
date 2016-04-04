@@ -52,8 +52,8 @@ import org.uncommons.watchmaker.framework.EvolutionStrategyEngine;
 import org.uncommons.watchmaker.framework.EvolutionaryOperator;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.IntArrayCrossover;
-import sbstframe.problem.ProblemInterface;
 import sbstframe.solution.searchTechniques.operators.IntArrayMutationOMAC;
+import sbstframe.problem.IProblem;
 
 /**
  * Class for exposing evolutionary strategy
@@ -63,7 +63,7 @@ public class EvolutionaryStrategy extends AbstractEvolutionaryAlgorithm{
     private boolean plusSelection;
     private int offspringMultiplier;
     
-    public EvolutionaryStrategy(ProblemInterface benchmark, int popSize, int indSize,
+    public EvolutionaryStrategy(IProblem benchmark, int popSize, int indSize,
             double crossRate, double mutRate, boolean plusSelection, int offspringMultiplier){
         
         super(benchmark, popSize, indSize);
@@ -93,7 +93,7 @@ public class EvolutionaryStrategy extends AbstractEvolutionaryAlgorithm{
     }
     
     public EvolutionaryStrategy
-        (ProblemInterface benchmark, int popSize, int indSize,
+        (IProblem benchmark, int popSize, int indSize,
             double crossRate, double mutRate, boolean plusSelection, int offspringMultiplier, double classificatoryRate){
         
         super(benchmark, popSize, indSize);

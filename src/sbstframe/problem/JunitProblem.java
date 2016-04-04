@@ -24,7 +24,7 @@ import junit.framework.TestSuite;
  * Implements an ProblemInterface in order to use SBSTFrame with {@see Junit}
  * @author Eduardo Horst
  */
-public class JunitReport implements ProblemInterface{   
+public class JunitProblem implements IProblem{   
     /**
      * Holds all the test suites, were each one contains all test cases for one testRequisite
      */
@@ -49,7 +49,7 @@ public class JunitReport implements ProblemInterface{
      * @throws InvalidParameterException if the quantity of tests in any TestSuite of
      * testCaseOnMutants differs
      */
-    public JunitReport(TestSuite[] testCasesOnTestRequirements, int WorthLessReq, double scoreMax) throws NullPointerException, InvalidParameterException {
+    public JunitProblem(TestSuite[] testCasesOnTestRequirements, int WorthLessReq, double scoreMax) throws NullPointerException, InvalidParameterException {
         //Integrity test, all mutants must have the same quantity of Tests since it is spected for them to run the same tests
         int qntTestCase = testCasesOnTestRequirements[0].testCount();
         for(int mutantIndex = 0; mutantIndex < testCasesOnTestRequirements.length; mutantIndex++) {

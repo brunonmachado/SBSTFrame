@@ -53,9 +53,9 @@ import org.uncommons.watchmaker.framework.islands.RingMigration;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.IntArrayCrossover;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
-import sbstframe.problem.ProblemInterface;
 import sbstframe.solution.searchTechniques.operators.IntArrayMutation;
 import sbstframe.solution.searchTechniques.operators.IntArrayMutationOMAC;
+import sbstframe.problem.IProblem;
 
 /**
  *
@@ -65,7 +65,7 @@ public class IslandModel extends AbstractEvolutionaryAlgorithm{
     private double crossRate, mutRate, classificatoryRate;
     private int islands, migration, epoch;
     
-    public IslandModel(ProblemInterface benchmark, int popSize, int indSize,
+    public IslandModel(IProblem benchmark, int popSize, int indSize,
             double crossRate, double mutRate, int islands, int migration, int epoch, 
             SelectionOperator selectionStrategy){
         
@@ -100,7 +100,7 @@ public class IslandModel extends AbstractEvolutionaryAlgorithm{
         
     }
     
-     public IslandModel(ProblemInterface benchmark, int popSize, int indSize,
+     public IslandModel(IProblem benchmark, int popSize, int indSize,
             double crossRate, double mutRate, int islands, int migration, int epoch, 
             SelectionOperator selectionStrategy, double classificatoryRate){
         

@@ -53,7 +53,7 @@ public class DefaultReportTest {
     @Test
     public void testGetBenchmarkPath() {
         System.out.println("getBenchmarkPath");
-        DefaultReportLazy instance = null;
+        DefaultProblemLazy instance = null;
         String expResult = "";
         String result = instance.getBenchmarkPath();
         assertEquals(expResult, result);
@@ -67,7 +67,7 @@ public class DefaultReportTest {
     @Test
     public void testGetTestCaseTotal() {
         System.out.println("getTestCaseTotal");
-        DefaultReportLazy instance = null;
+        DefaultProblemLazy instance = null;
         int expResult = 0;
         int result = instance.getTestCaseTotal();
         assertEquals(expResult, result);
@@ -81,7 +81,7 @@ public class DefaultReportTest {
     @Test
     public void testGetRequirementTotal() {
         System.out.println("getRequirementTotal");
-        DefaultReportLazy instance = null;
+        DefaultProblemLazy instance = null;
         int expResult = 0;
         int result = instance.getRequirementTotal();
         assertEquals(expResult, result);
@@ -97,7 +97,7 @@ public class DefaultReportTest {
         System.out.println("getTest");
         int testCase = 0;
         int testReq = 0;
-        DefaultReportLazy instance = null;
+        DefaultProblemLazy instance = null;
         boolean expResult = false;
         boolean result = instance.getTest(testCase, testReq);
         assertEquals(expResult, result);
@@ -111,7 +111,7 @@ public class DefaultReportTest {
     @Test
     public void testGetWorthlessReqTotal() {
         System.out.println("getWorthlessReqTotal");
-        DefaultReportLazy instance = null;
+        DefaultProblemLazy instance = null;
         int expResult = 0;
         int result = instance.getWorthlessReqTotal();
         assertEquals(expResult, result);
@@ -125,7 +125,7 @@ public class DefaultReportTest {
     @Test
     public void testGetScoreMax() {
         System.out.println("getScoreMax");
-        DefaultReportLazy instance = null;
+        DefaultProblemLazy instance = null;
         double expResult = 0.0;
         double result = instance.getScoreMax();
         assertEquals(expResult, result, 0.0);

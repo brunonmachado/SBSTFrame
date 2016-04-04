@@ -42,10 +42,10 @@ package sbstframe.solution;
 
 import java.io.IOException;
 import org.jfree.data.xy.XYSeries;
-import sbstframe.problem.ProblemInterface;
 import sbstframe.results.Metrics;
 import sbstframe.solution.searchTechniques.AbstractEvolutionaryAlgorithm;
 import sbstframe.solution.searchTechniques.FitnessFunction;
+import sbstframe.problem.IProblem;
 
 /**
  * Experimentation class, controls the flux of execution of the experiment.
@@ -75,7 +75,7 @@ public class Experiment {
     /**
      * Test result source
      */
-    private ProblemInterface benchmark;
+    private IProblem benchmark;
     
     /**
      * data to use in the chart

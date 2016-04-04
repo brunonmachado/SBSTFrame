@@ -47,8 +47,8 @@ import sbstframe.solution.searchTechniques.operators.EvolutionLogger;
 import org.uncommons.watchmaker.framework.EvolutionEngine;
 import org.uncommons.watchmaker.framework.TerminationCondition;
 import org.uncommons.watchmaker.framework.islands.IslandEvolution;
-import sbstframe.problem.ProblemInterface;
 import sbstframe.results.Metrics;
+import sbstframe.problem.IProblem;
    
 public abstract class AbstractEvolutionaryAlgorithm {
     /**
@@ -97,7 +97,7 @@ public abstract class AbstractEvolutionaryAlgorithm {
     /**
      * Test source
      */
-    private ProblemInterface benchmark;
+    private IProblem benchmark;
     
     /**
      * ? related to island engine
@@ -116,7 +116,7 @@ public abstract class AbstractEvolutionaryAlgorithm {
      * @param popSize population size
      * @param indSize individual size
      */
-    public AbstractEvolutionaryAlgorithm(ProblemInterface benchmark, int popSize, int indSize) {
+    public AbstractEvolutionaryAlgorithm(IProblem benchmark, int popSize, int indSize) {
         this.benchmark = benchmark;
         this.popSize = popSize;
         this.indSize = indSize;
@@ -259,7 +259,7 @@ public abstract class AbstractEvolutionaryAlgorithm {
      * Exposes the test source to read
      * @return benchmark
      */
-    public ProblemInterface getBenchmark() {
+    public IProblem getBenchmark() {
         return benchmark;
     }
     

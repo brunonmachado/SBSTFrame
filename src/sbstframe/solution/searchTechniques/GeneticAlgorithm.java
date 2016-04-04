@@ -54,15 +54,15 @@ import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.operators.IntArrayCrossover;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
 //import org.uncommons.watchmaker.framework.selection.TournamentSelection;
-import sbstframe.problem.ProblemInterface;
 import sbstframe.solution.searchTechniques.operators.IntArrayFactory;
 import sbstframe.solution.searchTechniques.operators.IntArrayMutation;
 import sbstframe.solution.searchTechniques.operators.IntArrayMutationOMAC;
+import sbstframe.problem.IProblem;
 
 public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm{
     private double crossRate, mutRate,classificatoryRate;
     
-    public GeneticAlgorithm(ProblemInterface benchmark, int popSize, int indSize,
+    public GeneticAlgorithm(IProblem benchmark, int popSize, int indSize,
             double crossRate, double mutRate, SelectionOperator selectionStrategy){
         
         super(benchmark, popSize, indSize);
@@ -97,7 +97,7 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm{
         
     }
     
-    public GeneticAlgorithm(ProblemInterface benchmark, int popSize, int indSize,
+    public GeneticAlgorithm(IProblem benchmark, int popSize, int indSize,
             double crossRate, double mutRate, SelectionOperator selectionStrategy,
             double classificatoryRate){
         
