@@ -100,3 +100,15 @@
 "maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
 "0,9992821";"0,9992821";"0,0000000";"178,9605";"149";"geneticAlg;0.95;0.05;useClassification;0.0";
 
+"maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
+"0,8481013";"0,8481013";"0,0000000";"1,8420";"149";"geneticAlg;0.95;0.05;useClassification;0.0";
+
+"maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
+"0,7925926";"0,7777778";"0,0004390";"0,0110";"151";"geneticAlg;0.95;0.05;useClassification;0.0";
+
+"maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
+"0,8481013";"0,8481013";"0,0000000";"0,0075";"149";"geneticAlg;0.95;0.05;useClassification;0.0";
+
+"maxFitness";"averageScore";"stdDeviation";"time";"fitnessCalls";"algorithmInfo";
+"0,5974026";"0,5746753";"0,0010331";"0,0010";"147";"geneticAlg;0.95;0.05;useClassification;0.0";
+

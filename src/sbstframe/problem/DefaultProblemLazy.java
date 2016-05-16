@@ -49,16 +49,16 @@ import java.io.IOException;
  * @author Andre/Beatriz/Bruno/Eduardo
  */
 public class DefaultProblemLazy implements IProblem {
-    public final static char CASE_SEPARATOR = ';'; //Separator of testCases in benchmark
-    public final static char REQ_SEPARATOR = '\n'; //Separator of testRequirements in benchmark 
-    public final static char TEST_PASSED = '1'; //Mark test passed
-    public final static char TEST_FAILED = '0'; //Mark test failed
+    public final static char CASE_SEPARATOR = ';';  //Separator of testCases in benchmark
+    public final static char REQ_SEPARATOR = '\n';  //Separator of testRequirements in benchmark 
+    public final static char TEST_PASSED = '1';     //Mark test passed
+    public final static char TEST_FAILED = '0';     //Mark test failed
     
-    private final String benchmarkPath; //Path to benchmark file
-    private int tcTotal; //Number of test cases
-    private int reqTotal; //Number of requirements
-    private int worthlessReqTotal; //Number of worthless requirements
-    private double scoreMax; //Maximum score obtainable from this subset
+    private final String benchmarkPath;     //Path to benchmark file
+    private int tcTotal;                    //Number of test cases
+    private int reqTotal;                   //Number of requirements
+    private int worthlessReqTotal;          //Number of worthless requirements
+    private double scoreMax;                //Maximum score obtainable from this subset
     
     /**
      * Default constructor for {@code ProblemInterface}
@@ -95,7 +95,7 @@ public class DefaultProblemLazy implements IProblem {
         try (FileReader reader = new FileReader(benchmarkPath)) {
             reqTotal = tcTotal = 0;
             boolean lineOver = false;
-
+            
             while(reader.ready() && !lineOver) switch (reader.read()) {
                 case CASE_SEPARATOR: tcTotal++; break;
                 case REQ_SEPARATOR: lineOver = true; break;
@@ -139,17 +139,21 @@ public class DefaultProblemLazy implements IProblem {
      * @see ProblemInterface.getTest
      */
     @Override
-    public boolean getTest(int testCase, int testReq) {
+    public synchronized boolean getTest(int testCase, int testReq) {
         try(FileReader reader = new FileReader(benchmarkPath)) {
-            reader.skip((tcTotal*2 + 1) * testReq + 2 * testCase);
-            switch(reader.read()) {
+            long toSkip = (tcTotal*2L + 1L) * testReq + 2L * testCase;
+            reader.skip(toSkip);
+
+            int ch = reader.read();
+            switch(ch) {
                 case TEST_PASSED: return true;
                 case TEST_FAILED: return false;
-                default: throw new RuntimeException();
+                default: throw new RuntimeException();  //Foreign character found
             }
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException(ex);             //Problem while reading file
         }
+        
     }
     
     /**

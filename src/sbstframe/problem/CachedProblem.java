@@ -18,8 +18,6 @@ package sbstframe.problem;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 /**
  * Class for storage of test results in order to not need re-tests.
@@ -39,7 +37,7 @@ public class CachedProblem extends ProblemDecorator {
     public CachedProblem(IProblem myProblem) {
         super(myProblem);
         MAX_KEYS = 3000;
-        cache = new ConcurrentHashMap<>(MAX_KEYS);
+        cache = new HashMap<>(MAX_KEYS); //The Ideal is use Concurrent hashmap
 
         rand = new Random();
     }
@@ -68,24 +66,20 @@ public class CachedProblem extends ProblemDecorator {
      * @return 
      */
     @Override
-    public boolean getTest(int testCase, int testReq) {
+    public synchronized boolean getTest(int testCase, int testReq) {
         final Key currentKey;
         currentKey = new Key(testCase, testReq);
         
-        return cache.computeIfAbsent(currentKey, new Function<Key, Boolean>() {
-            @Override
-            public synchronized Boolean apply(Key myKey) {
-                while(cache.size() >= MAX_KEYS) removeRandomKey();
-                return problem.getTest(myKey.testCase, myKey.testReq);
-                
-            }
+        return cache.computeIfAbsent(currentKey, (Key myKey) -> {
+            while(cache.size() >= MAX_KEYS) removeRandomKey();
+            return problem.getTest(myKey.testCase, myKey.testReq);
         });
     }
     
     /**
      * Removes a random key from this cache
      */
-    private synchronized void removeRandomKey() {
+    private void removeRandomKey() {
         cache.remove(cache.keySet().stream().skip(rand.nextInt(cache.size())).findAny().get());
     }
 

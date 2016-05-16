@@ -89,7 +89,8 @@ public class DefaultProblem extends DefaultProblemLazy {
         tc = req = 0;
         final int reqTotal = getRequirementTotal();
         while(req < reqTotal) {
-            switch (reader.read()) {
+            char ch = (char) reader.read();
+            switch (ch) {
                 case TEST_FAILED: tests[req][tc] = false; break;
                 case TEST_PASSED: tests[req][tc] = true;  break;
                 case CASE_SEPARATOR: tc++; break;

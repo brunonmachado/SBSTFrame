@@ -60,7 +60,7 @@ public enum Benchmarks {
     /**
      * Root folder where default benchmarks are hold
      */
-    private static final String BENCH_FOLDER_PATH = "benchmarks/";
+    public static final String BENCH_FOLDER_PATH = "benchmarks/";
     
     /**
      * Quantity of test cases
@@ -90,15 +90,7 @@ public enum Benchmarks {
         this.path = BENCH_FOLDER_PATH + fileName;
     }
 
-    /**
-     * Getter to property BENCH_FOLDER
-     * @return BENCH_FOLDER
-     */
-    public static String getBENCH_FOLDER() {
-        return BENCH_FOLDER_PATH;
-    }
-
-    /**
+        /**
      * Getter to property totalTestCase
      * @return totalTestCase
      */
